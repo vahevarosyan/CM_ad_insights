@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Meta Ads — Weekly Dashboard</title>
+  <title>CM Insights Dashboard</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #ffffff; --bg2: #f5f5f5; --bg3: #efefef;
-      --text: #1a1a1a; --text2: #555; --text3: #888;
-      --border: rgba(0,0,0,0.12); --border2: rgba(0,0,0,0.2);
+      --bg: #ffffff; --bg2: #f5f5f4; --bg3: #efefed;
+      --text: #1a1a1a; --text2: #555; --text3: #999;
+      --border: rgba(0,0,0,0.1); --border2: rgba(0,0,0,0.18);
       --success-bg: #eaf3de; --success-text: #3b6d11; --success-border: #97c459;
       --danger-bg: #fcebeb; --danger-text: #a32d2d; --danger-border: #f09595;
       --info-bg: #e6f1fb; --info-text: #185fa5; --info-border: #85b7eb;
@@ -19,97 +19,201 @@
       :root {
         --bg: #1a1a1a; --bg2: #242424; --bg3: #2e2e2e;
         --text: #f0f0f0; --text2: #aaa; --text3: #666;
-        --border: rgba(255,255,255,0.1); --border2: rgba(255,255,255,0.2);
+        --border: rgba(255,255,255,0.09); --border2: rgba(255,255,255,0.18);
         --success-bg: #173404; --success-text: #c0dd97; --success-border: #3b6d11;
         --danger-bg: #501313; --danger-text: #f7c1c1; --danger-border: #a32d2d;
         --info-bg: #042c53; --info-text: #b5d4f4; --info-border: #185fa5;
       }
     }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg3); color: var(--text); min-height: 100vh; padding: 2rem 1rem; }
-    .container { max-width: 960px; margin: 0 auto; }
-    .top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 12px; }
-    .top-bar h1 { font-size: 20px; font-weight: 600; }
-    .week-badges { display: flex; gap: 8px; flex-wrap: wrap; }
-    .badge { font-size: 12px; padding: 4px 10px; border-radius: var(--radius); border: 0.5px solid var(--border); color: var(--text2); background: var(--bg2); }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg3); color: var(--text); min-height: 100vh; }
+ 
+    /* ── Top nav ── */
+    .top-nav { background: var(--bg); border-bottom: 0.5px solid var(--border2); padding: 0 2rem; display: flex; align-items: center; gap: 0; position: sticky; top: 0; z-index: 100; }
+    .nav-brand { font-size: 15px; font-weight: 500; color: var(--text); padding: 1rem 1.5rem 1rem 0; border-right: 0.5px solid var(--border); margin-right: 1rem; white-space: nowrap; }
+    .nav-tab { font-size: 14px; padding: 1.1rem 1.25rem; cursor: pointer; color: var(--text2); border-bottom: 2px solid transparent; margin-bottom: -0.5px; transition: color 0.15s; white-space: nowrap; }
+    .nav-tab:hover { color: var(--text); }
+    .nav-tab.active { color: var(--text); border-bottom-color: var(--text); font-weight: 500; }
+ 
+    /* ── Page wrapper ── */
+    .page { display: none; max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem; }
+    .page.active { display: block; }
+ 
+    /* ── Section headings ── */
+    .page-title { font-size: 20px; font-weight: 500; margin-bottom: 1.5rem; color: var(--text); }
+ 
+    /* ── Period badges ── */
+    .period-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 10px; }
+    .badges { display: flex; gap: 8px; flex-wrap: wrap; }
+    .badge { font-size: 12px; padding: 4px 10px; border-radius: var(--radius); border: 0.5px solid var(--border2); color: var(--text2); background: var(--bg2); }
     .badge.current { background: var(--info-bg); color: var(--info-text); border-color: var(--info-border); }
-    .upload-zone { border: 1.5px dashed var(--border2); border-radius: var(--radius-lg); padding: 2rem; text-align: center; cursor: pointer; margin-bottom: 1.5rem; transition: background 0.15s; background: var(--bg); }
-    .upload-zone:hover { background: var(--bg2); }
-    .upload-zone strong { font-size: 15px; font-weight: 500; display: block; margin-bottom: 6px; }
-    .upload-zone p { font-size: 13px; color: var(--text2); }
-    .upload-zone input { display: none; }
-    .upload-btn { display: inline-block; margin-top: 12px; font-size: 13px; padding: 6px 16px; border: 0.5px solid var(--border2); border-radius: var(--radius); cursor: pointer; color: var(--text); background: var(--bg); }
-    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 1.5rem; }
+ 
+    /* ── Upload zones ── */
+    .upload-area { border: 1.5px dashed var(--border2); border-radius: var(--radius-lg); padding: 1.75rem; text-align: center; cursor: pointer; margin-bottom: 1.5rem; transition: background 0.15s; background: var(--bg); }
+    .upload-area:hover { background: var(--bg2); }
+    .upload-area strong { font-size: 15px; font-weight: 500; display: block; margin-bottom: 5px; }
+    .upload-area p { font-size: 13px; color: var(--text2); }
+    .upload-area input { display: none; }
+    .upload-btn-label { display: inline-block; margin-top: 10px; font-size: 13px; padding: 5px 14px; border: 0.5px solid var(--border2); border-radius: var(--radius); cursor: pointer; color: var(--text); background: var(--bg); }
+ 
+    .upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.5rem; }
+    @media (max-width: 520px) { .upload-grid { grid-template-columns: 1fr; } }
+    .upload-slot { border: 1px dashed var(--border2); border-radius: var(--radius); padding: 11px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: background 0.15s; background: var(--bg); }
+    .upload-slot:hover { background: var(--bg2); }
+    .upload-slot.filled { border-style: solid; border-color: var(--info-border); background: var(--info-bg); }
+    .slot-icon { width: 28px; height: 28px; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex-shrink: 0; }
+    .slot-icon.fb { background: #1877F2; color: #fff; }
+    .slot-icon.ig { background: #E1306C; color: #fff; }
+    .slot-text { flex: 1; }
+    .slot-label { font-size: 13px; font-weight: 500; color: var(--text); }
+    .slot-sub { font-size: 11px; color: var(--text2); margin-top: 2px; }
+    .slot-sub.ok { color: var(--info-text); }
+    .upload-slot input { display: none; }
+    .upload-section-title { font-size: 12px; font-weight: 500; color: var(--text3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; margin-top: 1.25rem; }
+ 
+    /* ── KPI cards ── */
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 1.5rem; }
     .kpi-card { background: var(--bg2); border-radius: var(--radius); padding: 1rem; }
     .kpi-label { font-size: 12px; color: var(--text2); margin-bottom: 4px; }
-    .kpi-value { font-size: 22px; font-weight: 600; }
+    .kpi-value { font-size: 21px; font-weight: 500; color: var(--text); }
     .kpi-delta { font-size: 12px; margin-top: 4px; }
-    .delta-up { color: var(--success-text); }
-    .delta-down { color: var(--danger-text); }
-    .delta-neutral { color: var(--text3); }
-    .insights { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.5rem; }
-    .insight-card { border-radius: var(--radius); padding: 12px 16px; font-size: 13px; border: 0.5px solid; }
-    .insight-good { background: var(--success-bg); color: var(--success-text); border-color: var(--success-border); }
-    .insight-bad { background: var(--danger-bg); color: var(--danger-text); border-color: var(--danger-border); }
-    .insight-info { background: var(--info-bg); color: var(--info-text); border-color: var(--info-border); }
-    .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 1.5rem; }
-    @media (max-width: 560px) { .chart-row { grid-template-columns: 1fr; } }
+    .d-up { color: var(--success-text); }
+    .d-down { color: var(--danger-text); }
+    .d-neutral { color: var(--text3); }
+ 
+    /* ── Chart row ── */
+    .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 1.5rem; }
+    @media (max-width: 540px) { .chart-row { grid-template-columns: 1fr; } }
     .chart-box { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 1rem; }
-    .chart-label { font-size: 13px; color: var(--text2); margin-bottom: 10px; font-weight: 500; }
-    .tabs { display: flex; gap: 4px; margin-bottom: 1rem; border-bottom: 0.5px solid var(--border); }
-    .tab { font-size: 13px; padding: 6px 14px; cursor: pointer; color: var(--text2); border-bottom: 2px solid transparent; margin-bottom: -0.5px; }
-    .tab.active { color: var(--text); border-bottom-color: var(--text); font-weight: 500; }
-    .table-wrap { overflow-x: auto; border: 0.5px solid var(--border); border-radius: var(--radius-lg); background: var(--bg); }
+    .chart-label { font-size: 13px; color: var(--text2); font-weight: 500; margin-bottom: 10px; }
+ 
+    /* ── Tables ── */
+    .table-wrap { overflow-x: auto; border: 0.5px solid var(--border); border-radius: var(--radius-lg); background: var(--bg); margin-bottom: 1.5rem; }
     table { width: 100%; border-collapse: collapse; font-size: 13px; }
-    th { text-align: left; padding: 10px 14px; font-weight: 500; color: var(--text2); border-bottom: 0.5px solid var(--border); background: var(--bg2); white-space: nowrap; }
-    td { padding: 10px 14px; border-bottom: 0.5px solid var(--border); white-space: nowrap; }
+    th { text-align: left; padding: 9px 14px; font-weight: 500; color: var(--text2); border-bottom: 0.5px solid var(--border); background: var(--bg2); white-space: nowrap; }
+    th.r { text-align: right; }
+    td { padding: 10px 14px; border-bottom: 0.5px solid var(--border); color: var(--text); white-space: nowrap; vertical-align: middle; }
+    td.r { text-align: right; font-variant-numeric: tabular-nums; }
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: var(--bg2); }
+    .metric-name { font-weight: 500; }
+    .metric-desc { font-size: 11px; color: var(--text3); margin-top: 1px; }
+ 
+    /* ── Pills ── */
     .pill { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 99px; font-weight: 500; }
     .pill-up { background: var(--success-bg); color: var(--success-text); }
     .pill-down { background: var(--danger-bg); color: var(--danger-text); }
     .pill-neutral { background: var(--bg2); color: var(--text3); }
     .pill-new { background: var(--info-bg); color: var(--info-text); font-size: 10px; }
-    .empty-state { text-align: center; padding: 3rem 1rem; color: var(--text2); font-size: 14px; background: var(--bg); border-radius: var(--radius-lg); }
+    .no-data { font-size: 13px; color: var(--text3); }
+ 
+    /* ── Insights ── */
+    .insights { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.5rem; }
+    .ins-card { border-radius: var(--radius); padding: 11px 15px; font-size: 13px; border: 0.5px solid; }
+    .ins-good { background: var(--success-bg); color: var(--success-text); border-color: var(--success-border); }
+    .ins-bad { background: var(--danger-bg); color: var(--danger-text); border-color: var(--danger-border); }
+    .ins-info { background: var(--info-bg); color: var(--info-text); border-color: var(--info-border); }
+ 
+    /* ── Tabs inside page ── */
+    .inner-tabs { display: flex; gap: 4px; margin-bottom: 1rem; border-bottom: 0.5px solid var(--border); }
+    .itab { font-size: 13px; padding: 6px 14px; cursor: pointer; color: var(--text2); border-bottom: 2px solid transparent; margin-bottom: -0.5px; }
+    .itab.active { color: var(--text); border-bottom-color: var(--text); font-weight: 500; }
+ 
+    /* ── Overview combined ── */
+    .overview-section { margin-bottom: 2rem; }
+    .overview-title { font-size: 14px; font-weight: 500; color: var(--text2); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+    .dot-fb { background: #1877F2; }
+    .dot-ig { background: #E1306C; }
+    .dot-ads { background: #378ADD; }
+ 
+    /* ── Misc ── */
+    .empty-state { text-align: center; padding: 3rem 1rem; color: var(--text2); font-size: 14px; }
     .reset-btn { font-size: 12px; padding: 4px 10px; border: 0.5px solid var(--border2); border-radius: var(--radius); cursor: pointer; color: var(--danger-text); background: transparent; }
     .reset-btn:hover { background: var(--danger-bg); }
+    .action-btn { font-size: 13px; padding: 6px 14px; border: 0.5px solid var(--border2); border-radius: var(--radius); cursor: pointer; color: var(--text); background: var(--bg); }
+    .action-btn:hover { background: var(--bg2); }
+    .bottom-row { display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; flex-wrap: wrap; gap: 8px; }
   </style>
 </head>
 <body>
-<div class="container">
-  <div class="top-bar">
-    <h1>Meta Ads — Weekly Dashboard</h1>
-    <div class="week-badges" id="week-badges"><span class="badge">No data uploaded</span></div>
+ 
+<nav class="top-nav">
+  <div class="nav-brand">CM Insights</div>
+  <div class="nav-tab active" onclick="switchPage('ads')">Ad Insights</div>
+  <div class="nav-tab" onclick="switchPage('page')">Page Insights</div>
+  <div class="nav-tab" onclick="switchPage('overview')">Overview</div>
+</nav>
+ 
+<!-- ══════════════ AD INSIGHTS ══════════════ -->
+<div class="page active" id="page-ads">
+  <div class="period-row">
+    <div class="page-title">Ad Insights</div>
+    <div class="badges" id="ads-badges"><span class="badge">No data</span></div>
   </div>
-  <div class="upload-zone" id="drop-zone" onclick="document.getElementById('csv-input').click()">
-    <strong id="upload-title">Upload this week's CSV</strong>
-    <p id="upload-subtitle">Drag & drop or click to browse — Ads Manager exported CSV</p>
-    <label class="upload-btn">Choose file</label>
-    <input type="file" id="csv-input" accept=".csv">
+ 
+  <div class="upload-area" id="ads-drop" onclick="document.getElementById('ads-csv').click()">
+    <strong id="ads-upload-title">Upload this week's CSV</strong>
+    <p id="ads-upload-sub">Ads Manager exported CSV — drag & drop or click</p>
+    <label class="upload-btn-label">Choose file</label>
+    <input type="file" id="ads-csv" accept=".csv">
   </div>
-  <div id="dashboard-content">
-    <div class="empty-state">Upload your first CSV to see the dashboard.</div>
+ 
+  <div id="ads-content"><div class="empty-state">Upload your first CSV to see data.</div></div>
+ 
+  <div class="bottom-row">
+    <div></div>
+    <button class="reset-btn" onclick="resetAds()">Clear Ads data</button>
   </div>
+</div>
+ 
+<!-- ══════════════ PAGE INSIGHTS ══════════════ -->
+<div class="page" id="page-page">
+  <div class="period-row">
+    <div class="page-title">Page Insights</div>
+    <div class="badges" id="pi-badges"><span class="badge">No data</span></div>
+  </div>
+ 
+  <div class="upload-section-title">Facebook</div>
+  <div class="upload-grid" id="fb-slots"></div>
+  <div class="upload-section-title">Instagram</div>
+  <div class="upload-grid" id="ig-slots"></div>
+ 
+  <div class="inner-tabs">
+    <div class="itab active" onclick="switchPiView('current', event)">Current period</div>
+    <div class="itab" onclick="switchPiView('compare', event)">Compare periods</div>
+  </div>
+ 
+  <div id="pi-content"><div class="empty-state">Upload at least one CSV to see data.</div></div>
+ 
+  <div class="bottom-row">
+    <button class="action-btn" onclick="startNewPeriod()">Start new period ↗</button>
+    <button class="reset-btn" onclick="resetPI()">Clear Page Insights data</button>
+  </div>
+</div>
+ 
+<!-- ══════════════ OVERVIEW ══════════════ -->
+<div class="page" id="page-overview">
+  <div class="page-title">Overview</div>
+  <div id="overview-content"><div class="empty-state">Upload data in Ad Insights and Page Insights tabs to see the combined overview.</div></div>
 </div>
  
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-const SK = 'meta_ads_prev_v3', SKL = 'meta_ads_prev_label_v3';
-let currentData = null, prevData = null, prevLabel = null, activeTab = 'ads';
- 
+/* ─────────────── UTILS ─────────────── */
 function parseCSV(text) {
   const lines = text.split(/\r?\n/).filter(function(l){ return l.trim(); });
+  if (lines.length < 2) return null;
   const headers = splitLine(lines[0]);
   const rows = [];
   for (let i = 1; i < lines.length; i++) {
     const vals = splitLine(lines[i]);
     if (vals.length < 2) continue;
     const row = {};
-    headers.forEach(function(h, idx){ row[h.trim()] = (vals[idx] || '').trim(); });
+    headers.forEach(function(h, idx){ row[h.trim().toLowerCase()] = (vals[idx]||'').trim(); });
     rows.push(row);
   }
   return { headers, rows };
 }
- 
 function splitLine(line) {
   const r = []; let cur = '', inQ = false;
   for (let i = 0; i < line.length; i++) {
@@ -120,7 +224,6 @@ function splitLine(line) {
   }
   r.push(cur); return r;
 }
- 
 function findCol(headers, candidates) {
   for (const c of candidates) {
     const f = headers.find(function(h){ return h.toLowerCase().includes(c.toLowerCase()); });
@@ -128,220 +231,436 @@ function findCol(headers, candidates) {
   }
   return null;
 }
- 
-function toNum(v) { if (!v) return 0; return parseFloat(String(v).replace(/[^0-9.\-]/g, '')) || 0; }
-function fmt(n, d) { d = d === undefined ? 0 : d; if (n === null || isNaN(n)) return '—'; return n.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }); }
-function fmtC(n) { if (n === null || isNaN(n)) return '—'; return '$' + fmt(n, 2); }
-function delta(c, p) { if (!p) return null; return ((c - p) / Math.abs(p)) * 100; }
- 
-function deltaHtml(pct, inv) {
-  if (pct === null) return '<span class="delta-neutral">—</span>';
-  const good = inv ? pct < 0 : pct > 0;
-  const cls = Math.abs(pct) < 0.5 ? 'delta-neutral' : (good ? 'delta-up' : 'delta-down');
-  return '<span class="' + cls + '">' + (pct > 0 ? '+' : '') + fmt(pct, 1) + '%</span>';
+function toNum(v) { if (!v) return 0; return parseFloat(String(v).replace(/[^0-9.\-]/g,'')) || 0; }
+function fmt(n, d) { d = d===undefined?0:d; if (n===null||isNaN(n)) return '—'; return n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d}); }
+function fmtC(n) { if (n===null||isNaN(n)) return '—'; return '$'+fmt(n,2); }
+function fmtBig(n) {
+  if (n===null||n===undefined) return '—';
+  if (n>=1000000) return (n/1000000).toFixed(1)+'M';
+  if (n>=1000) return (n/1000).toFixed(1)+'K';
+  return Math.round(n).toLocaleString();
 }
- 
+function delta(c, p) { if (!p||p===0) return null; return ((c-p)/Math.abs(p))*100; }
 function pillHtml(pct, inv) {
-  if (pct === null) return '';
-  const good = inv ? pct < 0 : pct > 0;
-  const cls = Math.abs(pct) < 0.5 ? 'pill-neutral' : (good ? 'pill-up' : 'pill-down');
-  return '<span class="pill ' + cls + '">' + (pct > 0 ? '+' : '') + fmt(pct, 1) + '%</span>';
+  if (pct===null) return '';
+  const good = inv ? pct<0 : pct>0;
+  const cls = Math.abs(pct)<0.5?'pill-neutral':(good?'pill-up':'pill-down');
+  return '<span class="pill '+cls+'">'+(pct>0?'+':'')+pct.toFixed(1)+'%</span>';
 }
- 
+function deltaSpan(pct, inv) {
+  if (pct===null) return '<span class="d-neutral">—</span>';
+  const good = inv ? pct<0 : pct>0;
+  const cls = Math.abs(pct)<0.5?'d-neutral':(good?'d-up':'d-down');
+  return '<span class="'+cls+'">'+(pct>0?'+':'')+pct.toFixed(1)+'%</span>';
+}
 const NEW_PILL = '<span class="pill pill-new">New</span>';
  
-function extract(rows, headers) {
+/* ─────────────── PAGE SWITCHING ─────────────── */
+function switchPage(id) {
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.nav-tab').forEach(function(t){ t.classList.remove('active'); });
+  document.getElementById('page-'+id).classList.add('active');
+  event.target.classList.add('active');
+  if (id === 'overview') renderOverview();
+}
+ 
+/* ══════════════════════════════════════════════
+   AD INSIGHTS
+══════════════════════════════════════════════ */
+const ADS_SK = 'ads_curr_v1', ADS_SKL = 'ads_curr_label_v1';
+const ADS_PSK = 'ads_prev_v1', ADS_PSKL = 'ads_prev_label_v1';
+let adsData = null, adsPrevData = null, adsPrevLabel = null, adsActiveTab = 'ads';
+ 
+function loadAdsStorage() {
+  try {
+    const r = localStorage.getItem(ADS_SK), l = localStorage.getItem(ADS_SKL);
+    if (r && l) { adsData = JSON.parse(r); adsData.label = l; }
+    const pr = localStorage.getItem(ADS_PSK), pl = localStorage.getItem(ADS_PSKL);
+    if (pr && pl) { adsPrevData = JSON.parse(pr); adsPrevData.label = pl; adsPrevLabel = pl; }
+  } catch(e) {}
+}
+ 
+function extractAds(rows, headers) {
   const cR = findCol(headers, ['messaging conversations started','conversations started','results','leads']);
-  const cCPR = findCol(headers, ['cost per result','cost per lead','cpr','cpl']);
-  const cSp = findCol(headers, ['amount spent','spend','cost']);
+  const cCPR = findCol(headers, ['cost per result','cost per lead']);
+  const cSp = findCol(headers, ['amount spent','spend']);
   const cAd = findCol(headers, ['ad name','ad set name','campaign name']);
   const cAge = findCol(headers, ['age']);
   const cRch = findCol(headers, ['reach']);
-  const cCTR = findCol(headers, ['ctr','click-through rate','link click-through rate']);
+  const cCTR = findCol(headers, ['ctr','click-through rate']);
   const cFrq = findCol(headers, ['frequency']);
-  let totalSpend = 0, totalResults = 0, totalReach = 0;
+  let totalSpend=0, totalResults=0, totalReach=0;
   const adRows = [];
-  rows.forEach(function(row) {
-    const sp = toNum(row[cSp]), res = toNum(row[cR]);
-    totalSpend += sp; totalResults += res; totalReach += toNum(row[cRch]);
-    adRows.push({ name: row[cAd] || 'Unknown', results: res, cpr: toNum(row[cCPR]) || (res > 0 ? sp / res : 0), spend: sp, age: row[cAge] || '', ctr: toNum(row[cCTR]), freq: toNum(row[cFrq]) });
+  rows.forEach(function(row){
+    const sp=toNum(row[cSp]), res=toNum(row[cR]);
+    totalSpend+=sp; totalResults+=res; totalReach+=toNum(row[cRch]);
+    adRows.push({ name:row[cAd]||'Unknown', results:res, cpr:toNum(row[cCPR])||(res>0?sp/res:0), spend:sp, age:row[cAge]||'', ctr:toNum(row[cCTR]), freq:toNum(row[cFrq]) });
   });
-  const avgCPR = totalResults > 0 ? totalSpend / totalResults : 0;
-  const avgCTR = adRows.length > 0 ? adRows.reduce(function(s,r){ return s+r.ctr; }, 0) / adRows.length : 0;
-  const avgFreq = adRows.length > 0 ? adRows.reduce(function(s,r){ return s+r.freq; }, 0) / adRows.length : 0;
+  const avgCPR = totalResults>0?totalSpend/totalResults:0;
+  const avgCTR = adRows.length>0?adRows.reduce(function(s,r){return s+r.ctr;},0)/adRows.length:0;
+  const avgFreq = adRows.length>0?adRows.reduce(function(s,r){return s+r.freq;},0)/adRows.length:0;
   return { totalSpend, totalResults, avgCPR, totalReach, avgCTR, avgFreq, adRows };
 }
  
-function buildAdMap(data) {
-  const map = {};
-  data.adRows.forEach(function(r) {
-    const k = r.name.trim().toLowerCase();
-    if (!map[k]) map[k] = { results: 0, spend: 0 };
-    map[k].results += r.results; map[k].spend += r.spend;
-  });
-  Object.keys(map).forEach(function(k){ map[k].cpr = map[k].results > 0 ? map[k].spend / map[k].results : 0; });
-  return map;
+function handleAdsFile(file) {
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const parsed = parseCSV(e.target.result);
+    if (!parsed || !parsed.rows.length) { alert('No data found.'); return; }
+    parsed.label = file.name.replace('.csv','').replace(/_/g,' ');
+    if (adsData) {
+      try { localStorage.setItem(ADS_PSK, JSON.stringify({rows:adsData.rows,headers:adsData.headers})); localStorage.setItem(ADS_PSKL, adsData.label); } catch(e){}
+      adsPrevData = adsData; adsPrevLabel = adsData.label;
+    }
+    adsData = parsed;
+    try { localStorage.setItem(ADS_SK, JSON.stringify({rows:parsed.rows,headers:parsed.headers})); localStorage.setItem(ADS_SKL, parsed.label); } catch(e){}
+    adsActiveTab = 'ads';
+    updateAdsBadges(); updateAdsUploadZone(); renderAds();
+  };
+  reader.readAsText(file);
 }
  
-function buildAgeMap(data) {
-  const map = {};
-  data.adRows.forEach(function(r) {
-    if (!r.age) return;
-    const k = r.age.trim().toLowerCase();
-    if (!map[k]) map[k] = { age: r.age, results: 0, spend: 0 };
-    map[k].results += r.results; map[k].spend += r.spend;
-  });
-  return map;
+function updateAdsBadges() {
+  let h = '';
+  if (adsPrevLabel) h += '<span class="badge">Prev: '+adsPrevLabel+'</span>';
+  if (adsData) h += '<span class="badge current">Current: '+adsData.label+'</span>';
+  document.getElementById('ads-badges').innerHTML = h || '<span class="badge">No data</span>';
 }
  
-function renderDashboard() {
-  const curr = extract(currentData.rows, currentData.headers);
-  const prev = prevData ? extract(prevData.rows, prevData.headers) : null;
-  updateBadges(); updateUploadZone();
+function updateAdsUploadZone() {
+  if (!adsData) return;
+  document.getElementById('ads-upload-title').textContent = "Upload next period's CSV";
+  document.getElementById('ads-upload-sub').textContent = 'Current will become previous for comparison';
+}
  
-  const dSp = prev ? delta(curr.totalSpend, prev.totalSpend) : null;
-  const dR = prev ? delta(curr.totalResults, prev.totalResults) : null;
-  const dCPR = prev ? delta(curr.avgCPR, prev.avgCPR) : null;
-  const dRch = prev ? delta(curr.totalReach, prev.totalReach) : null;
-  const dCTR = prev ? delta(curr.avgCTR, prev.avgCTR) : null;
-  const dFrq = prev ? delta(curr.avgFreq, prev.avgFreq) : null;
- 
-  const ins = generateInsights(curr, prev, dSp, dR, dCPR, dCTR, dFrq);
-  let html = '';
- 
-  if (ins.length) {
-    html += '<div class="insights">';
-    ins.forEach(function(i){ html += '<div class="insight-card insight-' + i.type + '">' + i.text + '</div>'; });
-    html += '</div>';
-  }
- 
-  html += '<div class="kpi-grid">';
-  html += kpi('Conversations', fmt(curr.totalResults), deltaHtml(dR, false));
-  html += kpi('Cost per result', fmtC(curr.avgCPR), deltaHtml(dCPR, true));
-  html += kpi('Amount spent', fmtC(curr.totalSpend), deltaHtml(dSp, true));
-  html += kpi('Reach', fmt(curr.totalReach), deltaHtml(dRch, false));
-  if (curr.avgCTR > 0) html += kpi('Avg CTR', curr.avgCTR.toFixed(2) + '%', deltaHtml(dCTR, false));
-  if (curr.avgFreq > 0) html += kpi('Avg frequency', curr.avgFreq.toFixed(2), deltaHtml(dFrq, true));
-  html += '</div>';
- 
+function renderAds() {
+  if (!adsData) { document.getElementById('ads-content').innerHTML = '<div class="empty-state">Upload your first CSV to see data.</div>'; return; }
+  const curr = extractAds(adsData.rows, adsData.headers);
+  const prev = adsPrevData ? extractAds(adsPrevData.rows, adsPrevData.headers) : null;
+  const dSp=prev?delta(curr.totalSpend,prev.totalSpend):null;
+  const dR=prev?delta(curr.totalResults,prev.totalResults):null;
+  const dCPR=prev?delta(curr.avgCPR,prev.avgCPR):null;
+  const dRch=prev?delta(curr.totalReach,prev.totalReach):null;
+  const dCTR=prev?delta(curr.avgCTR,prev.avgCTR):null;
+  const dFrq=prev?delta(curr.avgFreq,prev.avgFreq):null;
+  const ins = adsInsights(curr, prev, dSp, dR, dCPR, dCTR, dFrq);
+  let h = '';
+  if (ins.length) { h += '<div class="insights">'; ins.forEach(function(i){ h += '<div class="ins-card ins-'+i.t+'">'+i.m+'</div>'; }); h += '</div>'; }
+  h += '<div class="kpi-grid">';
+  h += kpi('Conversations', fmt(curr.totalResults), deltaSpan(dR,false));
+  h += kpi('Cost per result', fmtC(curr.avgCPR), deltaSpan(dCPR,true));
+  h += kpi('Amount spent', fmtC(curr.totalSpend), deltaSpan(dSp,true));
+  h += kpi('Reach', fmt(curr.totalReach), deltaSpan(dRch,false));
+  if (curr.avgCTR>0) h += kpi('Avg CTR', curr.avgCTR.toFixed(2)+'%', deltaSpan(dCTR,false));
+  if (curr.avgFreq>0) h += kpi('Avg frequency', curr.avgFreq.toFixed(2), deltaSpan(dFrq,true));
+  h += '</div>';
   if (prev) {
-    html += '<div class="chart-row">'
-      + '<div class="chart-box"><div class="chart-label">Conversations — this vs last week</div><div style="position:relative;height:180px;"><canvas id="cConv" role="img" aria-label="Conversations comparison"></canvas></div></div>'
-      + '<div class="chart-box"><div class="chart-label">Spend — this vs last week</div><div style="position:relative;height:180px;"><canvas id="cSpend" role="img" aria-label="Spend comparison"></canvas></div></div>'
-      + '</div>';
+    h += '<div class="chart-row"><div class="chart-box"><div class="chart-label">Conversations</div><div style="position:relative;height:160px;"><canvas id="ac1" role="img" aria-label="Conversations comparison"></canvas></div></div>'
+      + '<div class="chart-box"><div class="chart-label">Spend</div><div style="position:relative;height:160px;"><canvas id="ac2" role="img" aria-label="Spend comparison"></canvas></div></div></div>';
   }
- 
-  html += '<div class="tabs">'
-    + '<div class="tab ' + (activeTab==='ads'?'active':'') + '" onclick="switchTab(\'ads\')">Ads breakdown</div>'
-    + '<div class="tab ' + (activeTab==='age'?'active':'') + '" onclick="switchTab(\'age\')">Age breakdown</div>'
-    + '</div>';
- 
-  html += activeTab === 'ads' ? renderAdsTable(curr, prev) : renderAgeTable(curr, prev);
-  html += '<div style="margin-top:1.5rem;display:flex;justify-content:flex-end;"><button class="reset-btn" onclick="resetAll()">Clear all data</button></div>';
- 
-  document.getElementById('dashboard-content').innerHTML = html;
- 
+  h += '<div class="inner-tabs"><div class="itab '+(adsActiveTab==='ads'?'active':'')+'" onclick="switchAdsTab(\'ads\',event)">Ads breakdown</div><div class="itab '+(adsActiveTab==='age'?'active':'')+'" onclick="switchAdsTab(\'age\',event)">Age breakdown</div></div>';
+  h += adsActiveTab==='ads' ? renderAdsTable(curr,prev) : renderAgeTable(curr,prev);
+  document.getElementById('ads-content').innerHTML = h;
   if (prev) {
-    requestAnimationFrame(function() {
-      renderBar('cConv', ['Last week','This week'], [prev.totalResults, curr.totalResults], ['#888780','#378ADD'], false);
-      renderBar('cSpend', ['Last week','This week'], [prev.totalSpend, curr.totalSpend], ['#888780','#378ADD'], true);
+    requestAnimationFrame(function(){
+      renderBar('ac1',['Last','This'],[prev.totalResults,curr.totalResults],['#888780','#378ADD'],false);
+      renderBar('ac2',['Last','This'],[prev.totalSpend,curr.totalSpend],['#888780','#378ADD'],true);
     });
   }
 }
  
-function kpi(label, value, dHtml) {
-  return '<div class="kpi-card"><div class="kpi-label">' + label + '</div><div class="kpi-value">' + value + '</div><div class="kpi-delta">' + dHtml + '</div></div>';
-}
+function kpi(label, value, dh) { return '<div class="kpi-card"><div class="kpi-label">'+label+'</div><div class="kpi-value">'+value+'</div><div class="kpi-delta">'+dh+'</div></div>'; }
  
-function generateInsights(curr, prev, dSp, dR, dCPR, dCTR, dFrq) {
+function adsInsights(curr, prev, dSp, dR, dCPR, dCTR, dFrq) {
   const ins = [];
-  if (!prev) { ins.push({ type:'info', text:"First week uploaded. Next week you'll see full comparison insights." }); return ins; }
-  if (dR !== null && dR > 15) ins.push({ type:'good', text:'Conversations up ' + fmt(dR,1) + '% week-over-week — strong delivery improvement.' });
-  if (dR !== null && dR < -15) ins.push({ type:'bad', text:'Conversations dropped ' + fmt(Math.abs(dR),1) + '% — check budget, audience, or creative fatigue.' });
-  if (dCPR !== null && dCPR < -10) ins.push({ type:'good', text:'Cost per result improved ' + fmt(Math.abs(dCPR),1) + '% — algorithm is optimizing well.' });
-  if (dCPR !== null && dCPR > 20) ins.push({ type:'bad', text:'CPR increased ' + fmt(dCPR,1) + '% — consider refreshing creatives or tightening audience.' });
-  if (curr.avgFreq > 3.5) ins.push({ type:'bad', text:'Frequency is ' + curr.avgFreq.toFixed(1) + ' — audience may be experiencing ad fatigue.' });
-  if (dSp !== null && Math.abs(dSp) > 30) ins.push({ type:'info', text:'Spend ' + (dSp>0?'increased':'decreased') + ' ' + fmt(Math.abs(dSp),1) + '% vs last week.' });
-  if (dCTR !== null && dCTR < -20) ins.push({ type:'bad', text:'CTR dropped ' + fmt(Math.abs(dCTR),1) + '% — creative engagement is declining.' });
-  if (dCTR !== null && dCTR > 20) ins.push({ type:'good', text:'CTR up ' + fmt(dCTR,1) + '% — creatives are resonating better this week.' });
+  if (!prev) { ins.push({t:'info',m:"First period uploaded. Upload next period to compare."}); return ins; }
+  if (dR!==null&&dR>15) ins.push({t:'good',m:'Conversations up '+fmt(dR,1)+'% — strong improvement.'});
+  if (dR!==null&&dR<-15) ins.push({t:'bad',m:'Conversations down '+fmt(Math.abs(dR),1)+'% — check budget or creative fatigue.'});
+  if (dCPR!==null&&dCPR<-10) ins.push({t:'good',m:'CPR improved '+fmt(Math.abs(dCPR),1)+'% — algorithm optimizing well.'});
+  if (dCPR!==null&&dCPR>20) ins.push({t:'bad',m:'CPR up '+fmt(dCPR,1)+'% — consider refreshing creatives.'});
+  if (curr.avgFreq>3.5) ins.push({t:'bad',m:'Frequency '+curr.avgFreq.toFixed(1)+' — possible ad fatigue.'});
+  if (dSp!==null&&Math.abs(dSp)>30) ins.push({t:'info',m:'Spend '+(dSp>0?'increased':'decreased')+' '+fmt(Math.abs(dSp),1)+'%.'});
+  if (dCTR!==null&&dCTR<-20) ins.push({t:'bad',m:'CTR down '+fmt(Math.abs(dCTR),1)+'% — creative engagement declining.'});
+  if (dCTR!==null&&dCTR>20) ins.push({t:'good',m:'CTR up '+fmt(dCTR,1)+'% — creatives resonating better.'});
   return ins;
 }
  
+function buildAdMap(data) {
+  const map = {};
+  data.adRows.forEach(function(r){ const k=r.name.trim().toLowerCase(); if(!map[k]) map[k]={results:0,spend:0}; map[k].results+=r.results; map[k].spend+=r.spend; });
+  Object.keys(map).forEach(function(k){ map[k].cpr=map[k].results>0?map[k].spend/map[k].results:0; });
+  return map;
+}
+ 
 function renderAdsTable(curr, prev) {
-  const prevMap = prev ? buildAdMap(prev) : {};
-  const grouped = {};
-  curr.adRows.forEach(function(r) {
-    const k = r.name.trim().toLowerCase();
-    if (!grouped[k]) grouped[k] = { name: r.name, results: 0, spend: 0 };
-    grouped[k].results += r.results; grouped[k].spend += r.spend;
+  const pm = prev ? buildAdMap(prev) : {};
+  const g = {};
+  curr.adRows.forEach(function(r){ const k=r.name.trim().toLowerCase(); if(!g[k]) g[k]={name:r.name,results:0,spend:0}; g[k].results+=r.results; g[k].spend+=r.spend; });
+  Object.keys(g).forEach(function(k){ g[k].cpr=g[k].results>0?g[k].spend/g[k].results:0; });
+  const sorted = Object.entries(g).sort(function(a,b){return b[1].results-a[1].results;});
+  let h = '<div class="table-wrap"><table><thead><tr><th>Ad name</th><th class="r">Conversations</th>';
+  if (prev) h += '<th class="r">WoW</th>';
+  h += '<th class="r">CPR</th>';
+  if (prev) h += '<th class="r">WoW</th>';
+  h += '<th class="r">Spend</th>';
+  if (prev) h += '<th class="r">WoW</th>';
+  h += '</tr></thead><tbody>';
+  sorted.forEach(function(e){ const k=e[0],d=e[1],p=pm[k]; const isNew=prev&&!p;
+    const dR=(!prev||isNew)?null:delta(d.results,p.results);
+    const dC=(!prev||isNew)?null:delta(d.cpr,p.cpr);
+    const dS=(!prev||isNew)?null:delta(d.spend,p.spend);
+    h += '<tr><td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;" title="'+d.name+'">'+(d.name.length>32?d.name.slice(0,32)+'…':d.name)+'</td>';
+    h += '<td class="r">'+fmt(d.results)+'</td>';
+    if (prev) h += '<td class="r">'+(isNew?NEW_PILL:pillHtml(dR,false))+'</td>';
+    h += '<td class="r">'+fmtC(d.cpr)+'</td>';
+    if (prev) h += '<td class="r">'+(isNew?'':pillHtml(dC,true))+'</td>';
+    h += '<td class="r">'+fmtC(d.spend)+'</td>';
+    if (prev) h += '<td class="r">'+(isNew?'':pillHtml(dS,true))+'</td>';
+    h += '</tr>';
   });
-  Object.keys(grouped).forEach(function(k){ grouped[k].cpr = grouped[k].results > 0 ? grouped[k].spend / grouped[k].results : 0; });
-  const sorted = Object.entries(grouped).sort(function(a,b){ return b[1].results - a[1].results; });
- 
-  let html = '<div class="table-wrap"><table><thead><tr><th>Ad name</th><th>Conversations</th>';
-  if (prev) html += '<th>WoW</th>';
-  html += '<th>CPR</th>';
-  if (prev) html += '<th>WoW</th>';
-  html += '<th>Spend</th>';
-  if (prev) html += '<th>WoW</th>';
-  html += '</tr></thead><tbody>';
- 
-  sorted.forEach(function(entry) {
-    const k = entry[0], d = entry[1], p = prevMap[k];
-    const isNew = prev && !p;
-    const dR = (!prev || isNew) ? null : delta(d.results, p.results);
-    const dC = (!prev || isNew) ? null : delta(d.cpr, p.cpr);
-    const dS = (!prev || isNew) ? null : delta(d.spend, p.spend);
-    html += '<tr>';
-    html += '<td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;" title="' + d.name + '">' + (d.name.length > 32 ? d.name.slice(0,32)+'…' : d.name) + '</td>';
-    html += '<td>' + fmt(d.results) + '</td>';
-    if (prev) html += '<td>' + (isNew ? NEW_PILL : pillHtml(dR, false)) + '</td>';
-    html += '<td>' + fmtC(d.cpr) + '</td>';
-    if (prev) html += '<td>' + (isNew ? '' : pillHtml(dC, true)) + '</td>';
-    html += '<td>' + fmtC(d.spend) + '</td>';
-    if (prev) html += '<td>' + (isNew ? '' : pillHtml(dS, true)) + '</td>';
-    html += '</tr>';
-  });
- 
-  html += '</tbody></table></div>';
-  return html;
+  return h + '</tbody></table></div>';
 }
  
 function renderAgeTable(curr, prev) {
-  const grouped = {};
-  curr.adRows.forEach(function(r) {
-    if (!r.age) return;
-    const k = r.age.trim().toLowerCase();
-    if (!grouped[k]) grouped[k] = { age: r.age, results: 0, spend: 0 };
-    grouped[k].results += r.results; grouped[k].spend += r.spend;
+  const g = {}; curr.adRows.forEach(function(r){ if(!r.age) return; const k=r.age.trim().toLowerCase(); if(!g[k]) g[k]={age:r.age,results:0,spend:0}; g[k].results+=r.results; g[k].spend+=r.spend; });
+  const pg = {}; if(prev) prev.adRows.forEach(function(r){ if(!r.age) return; const k=r.age.trim().toLowerCase(); if(!pg[k]) pg[k]={results:0,spend:0}; pg[k].results+=r.results; pg[k].spend+=r.spend; });
+  const sorted = Object.entries(g).sort(function(a,b){return b[1].results-a[1].results;});
+  if (!sorted.length) return '<div class="empty-state">No age data in this CSV.</div>';
+  let h = '<div class="table-wrap"><table><thead><tr><th>Age</th><th class="r">Conversations</th>';
+  if (prev) h += '<th class="r">WoW</th>';
+  h += '<th class="r">Spend</th>';
+  if (prev) h += '<th class="r">WoW</th>';
+  h += '<th class="r">CPR</th></tr></thead><tbody>';
+  sorted.forEach(function(e){ const k=e[0],d=e[1],p=pg[k]; const isNew=prev&&!p;
+    const cpr=d.results>0?d.spend/d.results:0;
+    const dR=(!prev||isNew)?null:delta(d.results,p.results);
+    const dS=(!prev||isNew)?null:delta(d.spend,p.spend);
+    h += '<tr><td>'+d.age+'</td><td class="r">'+fmt(d.results)+'</td>';
+    if (prev) h += '<td class="r">'+(isNew?NEW_PILL:pillHtml(dR,false))+'</td>';
+    h += '<td class="r">'+fmtC(d.spend)+'</td>';
+    if (prev) h += '<td class="r">'+(isNew?'':pillHtml(dS,true))+'</td>';
+    h += '<td class="r">'+fmtC(cpr)+'</td></tr>';
   });
-  const prevMap = prev ? buildAgeMap(prev) : {};
-  const sorted = Object.entries(grouped).sort(function(a,b){ return b[1].results - a[1].results; });
-  if (!sorted.length) return '<div class="empty-state">No age breakdown data found in this CSV.</div>';
- 
-  let html = '<div class="table-wrap"><table><thead><tr><th>Age range</th><th>Conversations</th>';
-  if (prev) html += '<th>WoW</th>';
-  html += '<th>Spend</th>';
-  if (prev) html += '<th>WoW</th>';
-  html += '<th>CPR</th></tr></thead><tbody>';
- 
-  sorted.forEach(function(entry) {
-    const k = entry[0], d = entry[1], p = prevMap[k];
-    const isNew = prev && !p;
-    const cpr = d.results > 0 ? d.spend / d.results : 0;
-    const dR = (!prev || isNew) ? null : delta(d.results, p.results);
-    const dS = (!prev || isNew) ? null : delta(d.spend, p.spend);
-    html += '<tr><td>' + d.age + '</td><td>' + fmt(d.results) + '</td>';
-    if (prev) html += '<td>' + (isNew ? NEW_PILL : pillHtml(dR, false)) + '</td>';
-    html += '<td>' + fmtC(d.spend) + '</td>';
-    if (prev) html += '<td>' + (isNew ? '' : pillHtml(dS, true)) + '</td>';
-    html += '<td>' + fmtC(cpr) + '</td></tr>';
-  });
- 
-  html += '</tbody></table></div>';
-  return html;
+  return h + '</tbody></table></div>';
 }
  
+function switchAdsTab(tab, e) {
+  adsActiveTab = tab;
+  document.querySelectorAll('#ads-content .itab').forEach(function(t){t.classList.remove('active');});
+  if(e) e.target.classList.add('active');
+  renderAds();
+}
+ 
+function resetAds() {
+  if (!confirm('Clear all Ads data?')) return;
+  try { [ADS_SK,ADS_SKL,ADS_PSK,ADS_PSKL].forEach(function(k){localStorage.removeItem(k);}); } catch(e){}
+  adsData=null; adsPrevData=null; adsPrevLabel=null;
+  document.getElementById('ads-upload-title').textContent = "Upload this week's CSV";
+  document.getElementById('ads-upload-sub').textContent = 'Ads Manager exported CSV — drag & drop or click';
+  updateAdsBadges(); renderAds();
+}
+ 
+/* ══════════════════════════════════════════════
+   PAGE INSIGHTS
+══════════════════════════════════════════════ */
+const PI_SK = 'pi_v1_', METRICS = [
+  { key:'views',       label:'Views',          desc:'Total content views',           fbCols:['views','total views'], igCols:['views','total views'] },
+  { key:'reach',       label:'Reach / Viewers',desc:'Unique accounts reached',        fbCols:['viewers','reach','unique viewers'], igCols:['reach','viewers'] },
+  { key:'follows',     label:'Follows',         desc:'New followers gained',          fbCols:['follows','new followers'], igCols:['follows','new followers'] },
+  { key:'link_clicks', label:'Link clicks',     desc:'Clicks on bio / profile link',  fbCols:['link clicks','facebook link clicks'], igCols:['link clicks','instagram link clicks'] },
+];
+const PLATS = ['fb','ig'];
+let piState = {}, piPrev = {}, piPrevLabel = null, piCurrLabel = null, piView = 'current';
+METRICS.forEach(function(m){ PLATS.forEach(function(p){ piState[p+'_'+m.key]=null; piPrev[p+'_'+m.key]=null; }); });
+ 
+function loadPIStorage() {
+  try {
+    const r=localStorage.getItem(PI_SK+'curr'),l=localStorage.getItem(PI_SK+'curr_label');
+    if(r&&l){piState=JSON.parse(r);piCurrLabel=l;}
+    const pr=localStorage.getItem(PI_SK+'prev'),pl=localStorage.getItem(PI_SK+'prev_label');
+    if(pr&&pl){piPrev=JSON.parse(pr);piPrevLabel=pl;}
+  } catch(e){}
+}
+ 
+function savePIState() {
+  try { localStorage.setItem(PI_SK+'curr',JSON.stringify(piState)); if(piCurrLabel) localStorage.setItem(PI_SK+'curr_label',piCurrLabel); } catch(e){}
+}
+ 
+function savePIPrev() {
+  try { localStorage.setItem(PI_SK+'prev',JSON.stringify(piPrev)); if(piPrevLabel) localStorage.setItem(PI_SK+'prev_label',piPrevLabel); } catch(e){}
+}
+ 
+function extractTotal(parsed, cols) {
+  if (!parsed) return null;
+  const h = parsed.headers.find(function(h){ return cols.some(function(c){ return h.trim().toLowerCase().includes(c); }); });
+  if (!h) return null;
+  let t=0; parsed.rows.forEach(function(row){ t+=toNum(row[h.trim().toLowerCase()]); }); return t;
+}
+ 
+function buildPISlots() {
+  ['fb','ig'].forEach(function(p) {
+    const el = document.getElementById(p+'-slots');
+    el.innerHTML = '';
+    METRICS.forEach(function(m) {
+      const key = p+'_'+m.key;
+      const filled = piState[key]!==null;
+      const slot = document.createElement('div');
+      slot.className = 'upload-slot'+(filled?' filled':'');
+      slot.innerHTML = '<div class="slot-icon '+p+'">'+(p==='fb'?'f':'ig')+'</div>'
+        +'<div class="slot-text"><div class="slot-label">'+m.label+'</div>'
+        +'<div class="slot-sub'+(filled?' ok':'')+'">'+( filled?'Loaded \u2713':(p==='fb'?'Facebook':'Instagram')+' CSV')+'</div></div>'
+        +'<input type="file" accept=".csv">';
+      slot.addEventListener('click', function(e){ if(e.target.tagName!=='INPUT') slot.querySelector('input').click(); });
+      slot.querySelector('input').addEventListener('change', function(e){ if(e.target.files[0]) handlePIFile(e.target.files[0], key, m, p); });
+      el.appendChild(slot);
+    });
+  });
+}
+ 
+function handlePIFile(file, key, metric, plat) {
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const parsed = parseCSV(e.target.result);
+    if (!parsed) { alert('Could not parse CSV.'); return; }
+    const cols = plat==='fb' ? metric.fbCols : metric.igCols;
+    const total = extractTotal(parsed, cols);
+    if (total===null) { alert('Could not find matching column.\nExpected one of: '+cols.join(', ')); return; }
+    piState[key] = total;
+    if (!piCurrLabel) piCurrLabel = file.name.replace('.csv','').replace(/_/g,' ');
+    savePIState();
+    buildPISlots(); updatePIBadges(); renderPI();
+  };
+  reader.readAsText(file);
+}
+ 
+function updatePIBadges() {
+  let h = '';
+  if (piPrevLabel) h += '<span class="badge">Prev: '+piPrevLabel+'</span>';
+  if (piCurrLabel) h += '<span class="badge current">Current: '+piCurrLabel+'</span>';
+  document.getElementById('pi-badges').innerHTML = h || '<span class="badge">No data</span>';
+}
+ 
+function switchPiView(v, e) {
+  piView = v;
+  document.querySelectorAll('#page-page .itab').forEach(function(t){t.classList.remove('active');});
+  if(e) e.target.classList.add('active');
+  renderPI();
+}
+ 
+function hasPIData() { return METRICS.some(function(m){ return PLATS.some(function(p){ return piState[p+'_'+m.key]!==null; }); }); }
+function hasPIPrev() { return METRICS.some(function(m){ return PLATS.some(function(p){ return piPrev[p+'_'+m.key]!==null; }); }); }
+ 
+function renderPI() {
+  const el = document.getElementById('pi-content');
+  if (!hasPIData()) { el.innerHTML = '<div class="empty-state">Upload at least one CSV to see data.</div>'; return; }
+  const showCmp = piView==='compare' && hasPIPrev();
+  let h = '<div class="table-wrap"><table><thead><tr><th>Metric</th>';
+  h += '<th class="r"><span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:50%;background:#1877F2;display:inline-block;"></span>Facebook</span></th>';
+  if (showCmp) h += '<th class="r">WoW</th>';
+  h += '<th class="r"><span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:50%;background:#E1306C;display:inline-block;"></span>Instagram</span></th>';
+  if (showCmp) h += '<th class="r">WoW</th>';
+  h += '</tr></thead><tbody>';
+  METRICS.forEach(function(m) {
+    const fb=piState['fb_'+m.key], ig=piState['ig_'+m.key];
+    const pfb=piPrev['fb_'+m.key], pig=piPrev['ig_'+m.key];
+    const dFb=(showCmp&&fb!==null&&pfb!==null)?delta(fb,pfb):null;
+    const dIg=(showCmp&&ig!==null&&pig!==null)?delta(ig,pig):null;
+    h += '<tr><td><div class="metric-name">'+m.label+'</div><div class="metric-desc">'+m.desc+'</div></td>';
+    h += '<td class="r">'+(fb!==null?fmtBig(fb):'<span class="no-data">—</span>')+'</td>';
+    if (showCmp) h += '<td class="r">'+pillHtml(dFb,false)+'</td>';
+    h += '<td class="r">'+(ig!==null?fmtBig(ig):'<span class="no-data">—</span>')+'</td>';
+    if (showCmp) h += '<td class="r">'+pillHtml(dIg,false)+'</td>';
+    h += '</tr>';
+  });
+  h += '</tbody></table></div>';
+  if (!hasPIPrev()) h += '<div style="font-size:13px;color:var(--text2);margin-bottom:1rem;">Use "Start new period" below to enable comparison next period.</div>';
+  el.innerHTML = h;
+}
+ 
+function startNewPeriod() {
+  if (!hasPIData()) { alert('No data to archive.'); return; }
+  if (!confirm('Move current data to "previous period" and start fresh?')) return;
+  piPrev = JSON.parse(JSON.stringify(piState));
+  piPrevLabel = piCurrLabel;
+  savePIPrev();
+  METRICS.forEach(function(m){ PLATS.forEach(function(p){ piState[p+'_'+m.key]=null; }); });
+  piCurrLabel = null;
+  savePIState();
+  buildPISlots(); updatePIBadges(); renderPI();
+}
+ 
+function resetPI() {
+  if (!confirm('Clear all Page Insights data?')) return;
+  try { ['curr','curr_label','prev','prev_label'].forEach(function(k){localStorage.removeItem(PI_SK+k);}); } catch(e){}
+  METRICS.forEach(function(m){ PLATS.forEach(function(p){ piState[p+'_'+m.key]=null; piPrev[p+'_'+m.key]=null; }); });
+  piCurrLabel=null; piPrevLabel=null;
+  buildPISlots(); updatePIBadges(); renderPI();
+}
+ 
+/* ══════════════════════════════════════════════
+   OVERVIEW
+══════════════════════════════════════════════ */
+function renderOverview() {
+  const el = document.getElementById('overview-content');
+  const hasAds = adsData !== null;
+  const hasPI = hasPIData();
+  if (!hasAds && !hasPI) { el.innerHTML = '<div class="empty-state">Upload data in Ad Insights and Page Insights tabs to see the combined overview.</div>'; return; }
+ 
+  let h = '';
+ 
+  if (hasAds) {
+    const curr = extractAds(adsData.rows, adsData.headers);
+    const prev = adsPrevData ? extractAds(adsPrevData.rows, adsPrevData.headers) : null;
+    const dSp=prev?delta(curr.totalSpend,prev.totalSpend):null;
+    const dR=prev?delta(curr.totalResults,prev.totalResults):null;
+    const dCPR=prev?delta(curr.avgCPR,prev.avgCPR):null;
+    const dRch=prev?delta(curr.totalReach,prev.totalReach):null;
+ 
+    h += '<div class="overview-section">';
+    h += '<div class="overview-title"><span class="dot dot-ads"></span> Ad performance';
+    if (adsData.label) h += ' <span style="font-size:12px;font-weight:400;color:var(--text3);">'+adsData.label+'</span>';
+    h += '</div>';
+    h += '<div class="kpi-grid">';
+    h += kpi('Conversations', fmt(curr.totalResults), deltaSpan(dR,false));
+    h += kpi('Cost per result', fmtC(curr.avgCPR), deltaSpan(dCPR,true));
+    h += kpi('Amount spent', fmtC(curr.totalSpend), deltaSpan(dSp,true));
+    h += kpi('Reach (ads)', fmt(curr.totalReach), deltaSpan(dRch,false));
+    h += '</div></div>';
+  }
+ 
+  if (hasPI) {
+    const fbViews=piState['fb_views'], igViews=piState['ig_views'];
+    const fbReach=piState['fb_reach'], igReach=piState['ig_reach'];
+    const fbFollows=piState['fb_follows'], igFollows=piState['ig_follows'];
+    const fbClicks=piState['fb_link_clicks'], igClicks=piState['ig_link_clicks'];
+    const pfbV=piPrev['fb_views'], pigV=piPrev['ig_views'];
+    const pfbF=piPrev['fb_follows'], pigF=piPrev['ig_follows'];
+ 
+    h += '<div class="overview-section">';
+    h += '<div class="overview-title"><span class="dot dot-fb"></span> Facebook page';
+    if (piCurrLabel) h += ' <span style="font-size:12px;font-weight:400;color:var(--text3);">'+piCurrLabel+'</span>';
+    h += '</div>';
+    h += '<div class="kpi-grid">';
+    if (fbViews!==null) h += kpi('Views', fmtBig(fbViews), deltaSpan(pfbV!==null?delta(fbViews,pfbV):null,false));
+    if (fbReach!==null) h += kpi('Viewers', fmtBig(fbReach), deltaSpan(null,false));
+    if (fbFollows!==null) h += kpi('Follows', fmtBig(fbFollows), deltaSpan(pfbF!==null?delta(fbFollows,pfbF):null,false));
+    if (fbClicks!==null) h += kpi('Link clicks', fmtBig(fbClicks), deltaSpan(null,false));
+    h += '</div></div>';
+ 
+    h += '<div class="overview-section">';
+    h += '<div class="overview-title"><span class="dot dot-ig"></span> Instagram page</div>';
+    h += '<div class="kpi-grid">';
+    if (igViews!==null) h += kpi('Views', fmtBig(igViews), deltaSpan(pigV!==null?delta(igViews,pigV):null,false));
+    if (igReach!==null) h += kpi('Reach', fmtBig(igReach), deltaSpan(null,false));
+    if (igFollows!==null) h += kpi('Follows', fmtBig(igFollows), deltaSpan(pigF!==null?delta(igFollows,pigF):null,false));
+    if (igClicks!==null) h += kpi('Link clicks', fmtBig(igClicks), deltaSpan(null,false));
+    h += '</div></div>';
+  }
+ 
+  el.innerHTML = h;
+}
+ 
+/* ── Chart helper ── */
 function renderBar(id, labels, data, colors, isCurrency) {
   const canvas = document.getElementById(id);
   if (!canvas) return;
@@ -350,70 +669,32 @@ function renderBar(id, labels, data, colors, isCurrency) {
     data: { labels, datasets: [{ data, backgroundColor: colors, borderRadius: 4, borderSkipped: false }] },
     options: {
       responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(ctx){ return isCurrency ? '$'+ctx.raw.toFixed(2) : ctx.raw.toLocaleString(); } } } },
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(ctx){ return isCurrency?'$'+ctx.raw.toFixed(2):ctx.raw.toLocaleString(); } } } },
       scales: {
         x: { grid: { display: false }, ticks: { font: { size: 12 } } },
-        y: { grid: { color: 'rgba(128,128,128,0.1)' }, ticks: { font: { size: 11 }, callback: function(v){ return isCurrency ? '$'+v.toFixed(0) : v.toLocaleString(); } } }
+        y: { grid: { color: 'rgba(128,128,128,0.08)' }, ticks: { font: { size: 11 }, callback: function(v){ return isCurrency?'$'+v.toFixed(0):v.toLocaleString(); } } }
       }
     }
   });
 }
  
-function updateBadges() {
-  let html = '';
-  if (prevLabel) html += '<span class="badge">Prev: ' + prevLabel + '</span>';
-  if (currentData) html += '<span class="badge current">Current: ' + currentData.label + '</span>';
-  document.getElementById('week-badges').innerHTML = html || '<span class="badge">No data uploaded</span>';
-}
+/* ── Ads upload wiring ── */
+const adsDropZone = document.getElementById('ads-drop');
+const adsCsvInput = document.getElementById('ads-csv');
+adsCsvInput.addEventListener('change', function(e){ if(e.target.files[0]) handleAdsFile(e.target.files[0]); });
+adsDropZone.addEventListener('dragover', function(e){ e.preventDefault(); adsDropZone.style.background='var(--bg2)'; });
+adsDropZone.addEventListener('dragleave', function(){ adsDropZone.style.background='var(--bg)'; });
+adsDropZone.addEventListener('drop', function(e){ e.preventDefault(); adsDropZone.style.background='var(--bg)'; const f=e.dataTransfer.files[0]; if(f&&f.name.endsWith('.csv')) handleAdsFile(f); });
  
-function updateUploadZone() {
-  if (!currentData) return;
-  document.getElementById('upload-title').textContent = "Upload next week's CSV";
-  document.getElementById('upload-subtitle').textContent = 'Current week will become previous for comparison';
-}
- 
-function switchTab(tab) { activeTab = tab; renderDashboard(); }
- 
-function handleFile(file) {
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const parsed = parseCSV(e.target.result);
-    if (!parsed.rows.length) { alert('No data rows found in CSV.'); return; }
-    parsed.label = file.name.replace('.csv','').replace(/_/g,' ');
-    if (currentData) {
-      try { localStorage.setItem(SK, JSON.stringify({ rows: currentData.rows, headers: currentData.headers })); localStorage.setItem(SKL, currentData.label); } catch(err) {}
-      prevData = currentData; prevLabel = currentData.label;
-    }
-    currentData = parsed; activeTab = 'ads';
-    renderDashboard();
-  };
-  reader.readAsText(file);
-}
- 
-function resetAll() {
-  if (!confirm('Clear all saved data?')) return;
-  try { localStorage.removeItem(SK); localStorage.removeItem(SKL); } catch(err) {}
-  currentData = null; prevData = null; prevLabel = null;
-  document.getElementById('week-badges').innerHTML = '<span class="badge">No data uploaded</span>';
-  document.getElementById('upload-title').textContent = "Upload this week's CSV";
-  document.getElementById('upload-subtitle').textContent = 'Drag & drop or click to browse — Ads Manager exported CSV';
-  document.getElementById('dashboard-content').innerHTML = '<div class="empty-state">Upload your first CSV to see the dashboard.</div>';
-}
- 
-function loadFromStorage() {
-  try {
-    const raw = localStorage.getItem(SK), label = localStorage.getItem(SKL);
-    if (raw && label) { prevData = JSON.parse(raw); prevLabel = label; updateBadges(); }
-  } catch(err) {}
-}
- 
-const dz = document.getElementById('drop-zone'), ci = document.getElementById('csv-input');
-ci.addEventListener('change', function(e){ if (e.target.files[0]) handleFile(e.target.files[0]); });
-dz.addEventListener('dragover', function(e){ e.preventDefault(); dz.style.background='var(--bg2)'; });
-dz.addEventListener('dragleave', function(){ dz.style.background='var(--bg)'; });
-dz.addEventListener('drop', function(e){ e.preventDefault(); dz.style.background='var(--bg)'; const f=e.dataTransfer.files[0]; if(f&&f.name.endsWith('.csv')) handleFile(f); });
-loadFromStorage();
+/* ── Init ── */
+loadAdsStorage();
+loadPIStorage();
+updateAdsBadges();
+updateAdsUploadZone();
+renderAds();
+buildPISlots();
+updatePIBadges();
+renderPI();
 </script>
 </body>
 </html>
