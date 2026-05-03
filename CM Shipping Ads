@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meta Ads — Weekly Dashboard</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #ffffff; --bg2: #f5f5f5; --bg3: #efefef;
+      --text: #1a1a1a; --text2: #555; --text3: #888;
+      --border: rgba(0,0,0,0.12); --border2: rgba(0,0,0,0.2);
+      --success-bg: #eaf3de; --success-text: #3b6d11; --success-border: #97c459;
+      --danger-bg: #fcebeb; --danger-text: #a32d2d; --danger-border: #f09595;
+      --info-bg: #e6f1fb; --info-text: #185fa5; --info-border: #85b7eb;
+      --radius: 8px; --radius-lg: 12px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1a1a1a; --bg2: #242424; --bg3: #2e2e2e;
+        --text: #f0f0f0; --text2: #aaa; --text3: #666;
+        --border: rgba(255,255,255,0.1); --border2: rgba(255,255,255,0.2);
+        --success-bg: #173404; --success-text: #c0dd97; --success-border: #3b6d11;
+        --danger-bg: #501313; --danger-text: #f7c1c1; --danger-border: #a32d2d;
+        --info-bg: #042c53; --info-text: #b5d4f4; --info-border: #185fa5;
+      }
+    }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg3); color: var(--text); min-height: 100vh; padding: 2rem 1rem; }
+    .container { max-width: 960px; margin: 0 auto; }
+    .top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 12px; }
+    .top-bar h1 { font-size: 20px; font-weight: 600; }
+    .week-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+    .badge { font-size: 12px; padding: 4px 10px; border-radius: var(--radius); border: 0.5px solid var(--border); color: var(--text2); background: var(--bg2); }
+    .badge.current { background: var(--info-bg); color: var(--info-text); border-color: var(--info-border); }
+    .upload-zone { border: 1.5px dashed var(--border2); border-radius: var(--radius-lg); padding: 2rem; text-align: center; cursor: pointer; margin-bottom: 1.5rem; transition: background 0.15s; background: var(--bg); }
+    .upload-zone:hover { background: var(--bg2); }
+    .upload-zone strong { font-size: 15px; font-weight: 500; display: block; margin-bottom: 6px; }
+    .upload-zone p { font-size: 13px; color: var(--text2); }
+    .upload-zone input { display: none; }
+    .upload-btn { display: inline-block; margin-top: 12px; font-size: 13px; padding: 6px 16px; border: 0.5px solid var(--border2); border-radius: var(--radius); cursor: pointer; color: var(--text); background: var(--bg); }
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 1.5rem; }
+    .kpi-card { background: var(--bg2); border-radius: var(--radius); padding: 1rem; }
+    .kpi-label { font-size: 12px; color: var(--text2); margin-bottom: 4px; }
+    .kpi-value { font-size: 22px; font-weight: 600; }
+    .kpi-delta { font-size: 12px; margin-top: 4px; }
+    .delta-up { color: var(--success-text); }
+    .delta-down { color: var(--danger-text); }
+    .delta-neutral { color: var(--text3); }
+    .insights { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.5rem; }
+    .insight-card { border-radius: var(--radius); padding: 12px 16px; font-size: 13px; border: 0.5px solid; }
+    .insight-good { background: var(--success-bg); color: var(--success-text); border-color: var(--success-border); }
+    .insight-bad { background: var(--danger-bg); color: var(--danger-text); border-color: var(--danger-border); }
+    .insight-info { background: var(--info-bg); color: var(--info-text); border-color: var(--info-border); }
+    .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 1.5rem; }
+    @media (max-width: 560px) { .chart-row { grid-template-columns: 1fr; } }
+    .chart-box { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 1rem; }
+    .chart-label { font-size: 13px; color: var(--text2); margin-bottom: 10px; font-weight: 500; }
+    .tabs { display: flex; gap: 4px; margin-bottom: 1rem; border-bottom: 0.5px solid var(--border); }
+    .tab { font-size: 13px; padding: 6px 14px; cursor: pointer; color: var(--text2); border-bottom: 2px solid transparent; margin-bottom: -0.5px; }
+    .tab.active { color: var(--text); border-bottom-color: var(--text); font-weight: 500; }
+    .table-wrap { overflow-x: auto; border: 0.5px solid var(--border); border-radius: var(--radius-lg); background: var(--bg); }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { text-align: left; padding: 10px 14px; font-weight: 500; color: var(--text2); border-bottom: 0.5px solid var(--border); background: var(--bg2); white-space: nowrap; }
+    td { padding: 10px 14px; border-bottom: 0.5px solid var(--border); white-space: nowrap; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--bg2); }
+    .pill { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 99px; font-weight: 500; }
+    .pill-up { background: var(--success-bg); color: var(--success-text); }
+    .pill-down { background: var(--danger-bg); color: var(--danger-text); }
+    .pill-neutral { background: var(--bg2); color: var(--text3); }
+    .pill-new { background: var(--info-bg); color: var(--info-text); font-size: 10px; }
+    .empty-state { text-align: center; padding: 3rem 1rem; color: var(--text2); font-size: 14px; background: var(--bg); border-radius: var(--radius-lg); }
+    .reset-btn { font-size: 12px; padding: 4px 10px; border: 0.5px solid var(--border2); border-radius: var(--radius); cursor: pointer; color: var(--danger-text); background: transparent; }
+    .reset-btn:hover { background: var(--danger-bg); }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="top-bar">
+    <h1>Meta Ads — Weekly Dashboard</h1>
+    <div class="week-badges" id="week-badges"><span class="badge">No data uploaded</span></div>
+  </div>
+  <div class="upload-zone" id="drop-zone" onclick="document.getElementById('csv-input').click()">
+    <strong id="upload-title">Upload this week's CSV</strong>
+    <p id="upload-subtitle">Drag & drop or click to browse — Ads Manager exported CSV</p>
+    <label class="upload-btn">Choose file</label>
+    <input type="file" id="csv-input" accept=".csv">
+  </div>
+  <div id="dashboard-content">
+    <div class="empty-state">Upload your first CSV to see the dashboard.</div>
+  </div>
+</div>
+ 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const SK = 'meta_ads_prev_v3', SKL = 'meta_ads_prev_label_v3';
+let currentData = null, prevData = null, prevLabel = null, activeTab = 'ads';
+ 
+function parseCSV(text) {
+  const lines = text.split(/\r?\n/).filter(function(l){ return l.trim(); });
+  const headers = splitLine(lines[0]);
+  const rows = [];
+  for (let i = 1; i < lines.length; i++) {
+    const vals = splitLine(lines[i]);
+    if (vals.length < 2) continue;
+    const row = {};
+    headers.forEach(function(h, idx){ row[h.trim()] = (vals[idx] || '').trim(); });
+    rows.push(row);
+  }
+  return { headers, rows };
+}
+ 
+function splitLine(line) {
+  const r = []; let cur = '', inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') inQ = !inQ;
+    else if (c === ',' && !inQ) { r.push(cur); cur = ''; }
+    else cur += c;
+  }
+  r.push(cur); return r;
+}
+ 
+function findCol(headers, candidates) {
+  for (const c of candidates) {
+    const f = headers.find(function(h){ return h.toLowerCase().includes(c.toLowerCase()); });
+    if (f) return f;
+  }
+  return null;
+}
+ 
+function toNum(v) { if (!v) return 0; return parseFloat(String(v).replace(/[^0-9.\-]/g, '')) || 0; }
+function fmt(n, d) { d = d === undefined ? 0 : d; if (n === null || isNaN(n)) return '—'; return n.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }); }
+function fmtC(n) { if (n === null || isNaN(n)) return '—'; return '$' + fmt(n, 2); }
+function delta(c, p) { if (!p) return null; return ((c - p) / Math.abs(p)) * 100; }
+ 
+function deltaHtml(pct, inv) {
+  if (pct === null) return '<span class="delta-neutral">—</span>';
+  const good = inv ? pct < 0 : pct > 0;
+  const cls = Math.abs(pct) < 0.5 ? 'delta-neutral' : (good ? 'delta-up' : 'delta-down');
+  return '<span class="' + cls + '">' + (pct > 0 ? '+' : '') + fmt(pct, 1) + '%</span>';
+}
+ 
+function pillHtml(pct, inv) {
+  if (pct === null) return '';
+  const good = inv ? pct < 0 : pct > 0;
+  const cls = Math.abs(pct) < 0.5 ? 'pill-neutral' : (good ? 'pill-up' : 'pill-down');
+  return '<span class="pill ' + cls + '">' + (pct > 0 ? '+' : '') + fmt(pct, 1) + '%</span>';
+}
+ 
+const NEW_PILL = '<span class="pill pill-new">New</span>';
+ 
+function extract(rows, headers) {
+  const cR = findCol(headers, ['messaging conversations started','conversations started','results','leads']);
+  const cCPR = findCol(headers, ['cost per result','cost per lead','cpr','cpl']);
+  const cSp = findCol(headers, ['amount spent','spend','cost']);
+  const cAd = findCol(headers, ['ad name','ad set name','campaign name']);
+  const cAge = findCol(headers, ['age']);
+  const cRch = findCol(headers, ['reach']);
+  const cCTR = findCol(headers, ['ctr','click-through rate','link click-through rate']);
+  const cFrq = findCol(headers, ['frequency']);
+  let totalSpend = 0, totalResults = 0, totalReach = 0;
+  const adRows = [];
+  rows.forEach(function(row) {
+    const sp = toNum(row[cSp]), res = toNum(row[cR]);
+    totalSpend += sp; totalResults += res; totalReach += toNum(row[cRch]);
+    adRows.push({ name: row[cAd] || 'Unknown', results: res, cpr: toNum(row[cCPR]) || (res > 0 ? sp / res : 0), spend: sp, age: row[cAge] || '', ctr: toNum(row[cCTR]), freq: toNum(row[cFrq]) });
+  });
+  const avgCPR = totalResults > 0 ? totalSpend / totalResults : 0;
+  const avgCTR = adRows.length > 0 ? adRows.reduce(function(s,r){ return s+r.ctr; }, 0) / adRows.length : 0;
+  const avgFreq = adRows.length > 0 ? adRows.reduce(function(s,r){ return s+r.freq; }, 0) / adRows.length : 0;
+  return { totalSpend, totalResults, avgCPR, totalReach, avgCTR, avgFreq, adRows };
+}
+ 
+function buildAdMap(data) {
+  const map = {};
+  data.adRows.forEach(function(r) {
+    const k = r.name.trim().toLowerCase();
+    if (!map[k]) map[k] = { results: 0, spend: 0 };
+    map[k].results += r.results; map[k].spend += r.spend;
+  });
+  Object.keys(map).forEach(function(k){ map[k].cpr = map[k].results > 0 ? map[k].spend / map[k].results : 0; });
+  return map;
+}
+ 
+function buildAgeMap(data) {
+  const map = {};
+  data.adRows.forEach(function(r) {
+    if (!r.age) return;
+    const k = r.age.trim().toLowerCase();
+    if (!map[k]) map[k] = { age: r.age, results: 0, spend: 0 };
+    map[k].results += r.results; map[k].spend += r.spend;
+  });
+  return map;
+}
+ 
+function renderDashboard() {
+  const curr = extract(currentData.rows, currentData.headers);
+  const prev = prevData ? extract(prevData.rows, prevData.headers) : null;
+  updateBadges(); updateUploadZone();
+ 
+  const dSp = prev ? delta(curr.totalSpend, prev.totalSpend) : null;
+  const dR = prev ? delta(curr.totalResults, prev.totalResults) : null;
+  const dCPR = prev ? delta(curr.avgCPR, prev.avgCPR) : null;
+  const dRch = prev ? delta(curr.totalReach, prev.totalReach) : null;
+  const dCTR = prev ? delta(curr.avgCTR, prev.avgCTR) : null;
+  const dFrq = prev ? delta(curr.avgFreq, prev.avgFreq) : null;
+ 
+  const ins = generateInsights(curr, prev, dSp, dR, dCPR, dCTR, dFrq);
+  let html = '';
+ 
+  if (ins.length) {
+    html += '<div class="insights">';
+    ins.forEach(function(i){ html += '<div class="insight-card insight-' + i.type + '">' + i.text + '</div>'; });
+    html += '</div>';
+  }
+ 
+  html += '<div class="kpi-grid">';
+  html += kpi('Conversations', fmt(curr.totalResults), deltaHtml(dR, false));
+  html += kpi('Cost per result', fmtC(curr.avgCPR), deltaHtml(dCPR, true));
+  html += kpi('Amount spent', fmtC(curr.totalSpend), deltaHtml(dSp, true));
+  html += kpi('Reach', fmt(curr.totalReach), deltaHtml(dRch, false));
+  if (curr.avgCTR > 0) html += kpi('Avg CTR', curr.avgCTR.toFixed(2) + '%', deltaHtml(dCTR, false));
+  if (curr.avgFreq > 0) html += kpi('Avg frequency', curr.avgFreq.toFixed(2), deltaHtml(dFrq, true));
+  html += '</div>';
+ 
+  if (prev) {
+    html += '<div class="chart-row">'
+      + '<div class="chart-box"><div class="chart-label">Conversations — this vs last week</div><div style="position:relative;height:180px;"><canvas id="cConv" role="img" aria-label="Conversations comparison"></canvas></div></div>'
+      + '<div class="chart-box"><div class="chart-label">Spend — this vs last week</div><div style="position:relative;height:180px;"><canvas id="cSpend" role="img" aria-label="Spend comparison"></canvas></div></div>'
+      + '</div>';
+  }
+ 
+  html += '<div class="tabs">'
+    + '<div class="tab ' + (activeTab==='ads'?'active':'') + '" onclick="switchTab(\'ads\')">Ads breakdown</div>'
+    + '<div class="tab ' + (activeTab==='age'?'active':'') + '" onclick="switchTab(\'age\')">Age breakdown</div>'
+    + '</div>';
+ 
+  html += activeTab === 'ads' ? renderAdsTable(curr, prev) : renderAgeTable(curr, prev);
+  html += '<div style="margin-top:1.5rem;display:flex;justify-content:flex-end;"><button class="reset-btn" onclick="resetAll()">Clear all data</button></div>';
+ 
+  document.getElementById('dashboard-content').innerHTML = html;
+ 
+  if (prev) {
+    requestAnimationFrame(function() {
+      renderBar('cConv', ['Last week','This week'], [prev.totalResults, curr.totalResults], ['#888780','#378ADD'], false);
+      renderBar('cSpend', ['Last week','This week'], [prev.totalSpend, curr.totalSpend], ['#888780','#378ADD'], true);
+    });
+  }
+}
+ 
+function kpi(label, value, dHtml) {
+  return '<div class="kpi-card"><div class="kpi-label">' + label + '</div><div class="kpi-value">' + value + '</div><div class="kpi-delta">' + dHtml + '</div></div>';
+}
+ 
+function generateInsights(curr, prev, dSp, dR, dCPR, dCTR, dFrq) {
+  const ins = [];
+  if (!prev) { ins.push({ type:'info', text:"First week uploaded. Next week you'll see full comparison insights." }); return ins; }
+  if (dR !== null && dR > 15) ins.push({ type:'good', text:'Conversations up ' + fmt(dR,1) + '% week-over-week — strong delivery improvement.' });
+  if (dR !== null && dR < -15) ins.push({ type:'bad', text:'Conversations dropped ' + fmt(Math.abs(dR),1) + '% — check budget, audience, or creative fatigue.' });
+  if (dCPR !== null && dCPR < -10) ins.push({ type:'good', text:'Cost per result improved ' + fmt(Math.abs(dCPR),1) + '% — algorithm is optimizing well.' });
+  if (dCPR !== null && dCPR > 20) ins.push({ type:'bad', text:'CPR increased ' + fmt(dCPR,1) + '% — consider refreshing creatives or tightening audience.' });
+  if (curr.avgFreq > 3.5) ins.push({ type:'bad', text:'Frequency is ' + curr.avgFreq.toFixed(1) + ' — audience may be experiencing ad fatigue.' });
+  if (dSp !== null && Math.abs(dSp) > 30) ins.push({ type:'info', text:'Spend ' + (dSp>0?'increased':'decreased') + ' ' + fmt(Math.abs(dSp),1) + '% vs last week.' });
+  if (dCTR !== null && dCTR < -20) ins.push({ type:'bad', text:'CTR dropped ' + fmt(Math.abs(dCTR),1) + '% — creative engagement is declining.' });
+  if (dCTR !== null && dCTR > 20) ins.push({ type:'good', text:'CTR up ' + fmt(dCTR,1) + '% — creatives are resonating better this week.' });
+  return ins;
+}
+ 
+function renderAdsTable(curr, prev) {
+  const prevMap = prev ? buildAdMap(prev) : {};
+  const grouped = {};
+  curr.adRows.forEach(function(r) {
+    const k = r.name.trim().toLowerCase();
+    if (!grouped[k]) grouped[k] = { name: r.name, results: 0, spend: 0 };
+    grouped[k].results += r.results; grouped[k].spend += r.spend;
+  });
+  Object.keys(grouped).forEach(function(k){ grouped[k].cpr = grouped[k].results > 0 ? grouped[k].spend / grouped[k].results : 0; });
+  const sorted = Object.entries(grouped).sort(function(a,b){ return b[1].results - a[1].results; });
+ 
+  let html = '<div class="table-wrap"><table><thead><tr><th>Ad name</th><th>Conversations</th>';
+  if (prev) html += '<th>WoW</th>';
+  html += '<th>CPR</th>';
+  if (prev) html += '<th>WoW</th>';
+  html += '<th>Spend</th>';
+  if (prev) html += '<th>WoW</th>';
+  html += '</tr></thead><tbody>';
+ 
+  sorted.forEach(function(entry) {
+    const k = entry[0], d = entry[1], p = prevMap[k];
+    const isNew = prev && !p;
+    const dR = (!prev || isNew) ? null : delta(d.results, p.results);
+    const dC = (!prev || isNew) ? null : delta(d.cpr, p.cpr);
+    const dS = (!prev || isNew) ? null : delta(d.spend, p.spend);
+    html += '<tr>';
+    html += '<td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;" title="' + d.name + '">' + (d.name.length > 32 ? d.name.slice(0,32)+'…' : d.name) + '</td>';
+    html += '<td>' + fmt(d.results) + '</td>';
+    if (prev) html += '<td>' + (isNew ? NEW_PILL : pillHtml(dR, false)) + '</td>';
+    html += '<td>' + fmtC(d.cpr) + '</td>';
+    if (prev) html += '<td>' + (isNew ? '' : pillHtml(dC, true)) + '</td>';
+    html += '<td>' + fmtC(d.spend) + '</td>';
+    if (prev) html += '<td>' + (isNew ? '' : pillHtml(dS, true)) + '</td>';
+    html += '</tr>';
+  });
+ 
+  html += '</tbody></table></div>';
+  return html;
+}
+ 
+function renderAgeTable(curr, prev) {
+  const grouped = {};
+  curr.adRows.forEach(function(r) {
+    if (!r.age) return;
+    const k = r.age.trim().toLowerCase();
+    if (!grouped[k]) grouped[k] = { age: r.age, results: 0, spend: 0 };
+    grouped[k].results += r.results; grouped[k].spend += r.spend;
+  });
+  const prevMap = prev ? buildAgeMap(prev) : {};
+  const sorted = Object.entries(grouped).sort(function(a,b){ return b[1].results - a[1].results; });
+  if (!sorted.length) return '<div class="empty-state">No age breakdown data found in this CSV.</div>';
+ 
+  let html = '<div class="table-wrap"><table><thead><tr><th>Age range</th><th>Conversations</th>';
+  if (prev) html += '<th>WoW</th>';
+  html += '<th>Spend</th>';
+  if (prev) html += '<th>WoW</th>';
+  html += '<th>CPR</th></tr></thead><tbody>';
+ 
+  sorted.forEach(function(entry) {
+    const k = entry[0], d = entry[1], p = prevMap[k];
+    const isNew = prev && !p;
+    const cpr = d.results > 0 ? d.spend / d.results : 0;
+    const dR = (!prev || isNew) ? null : delta(d.results, p.results);
+    const dS = (!prev || isNew) ? null : delta(d.spend, p.spend);
+    html += '<tr><td>' + d.age + '</td><td>' + fmt(d.results) + '</td>';
+    if (prev) html += '<td>' + (isNew ? NEW_PILL : pillHtml(dR, false)) + '</td>';
+    html += '<td>' + fmtC(d.spend) + '</td>';
+    if (prev) html += '<td>' + (isNew ? '' : pillHtml(dS, true)) + '</td>';
+    html += '<td>' + fmtC(cpr) + '</td></tr>';
+  });
+ 
+  html += '</tbody></table></div>';
+  return html;
+}
+ 
+function renderBar(id, labels, data, colors, isCurrency) {
+  const canvas = document.getElementById(id);
+  if (!canvas) return;
+  new Chart(canvas, {
+    type: 'bar',
+    data: { labels, datasets: [{ data, backgroundColor: colors, borderRadius: 4, borderSkipped: false }] },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(ctx){ return isCurrency ? '$'+ctx.raw.toFixed(2) : ctx.raw.toLocaleString(); } } } },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 12 } } },
+        y: { grid: { color: 'rgba(128,128,128,0.1)' }, ticks: { font: { size: 11 }, callback: function(v){ return isCurrency ? '$'+v.toFixed(0) : v.toLocaleString(); } } }
+      }
+    }
+  });
+}
+ 
+function updateBadges() {
+  let html = '';
+  if (prevLabel) html += '<span class="badge">Prev: ' + prevLabel + '</span>';
+  if (currentData) html += '<span class="badge current">Current: ' + currentData.label + '</span>';
+  document.getElementById('week-badges').innerHTML = html || '<span class="badge">No data uploaded</span>';
+}
+ 
+function updateUploadZone() {
+  if (!currentData) return;
+  document.getElementById('upload-title').textContent = "Upload next week's CSV";
+  document.getElementById('upload-subtitle').textContent = 'Current week will become previous for comparison';
+}
+ 
+function switchTab(tab) { activeTab = tab; renderDashboard(); }
+ 
+function handleFile(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const parsed = parseCSV(e.target.result);
+    if (!parsed.rows.length) { alert('No data rows found in CSV.'); return; }
+    parsed.label = file.name.replace('.csv','').replace(/_/g,' ');
+    if (currentData) {
+      try { localStorage.setItem(SK, JSON.stringify({ rows: currentData.rows, headers: currentData.headers })); localStorage.setItem(SKL, currentData.label); } catch(err) {}
+      prevData = currentData; prevLabel = currentData.label;
+    }
+    currentData = parsed; activeTab = 'ads';
+    renderDashboard();
+  };
+  reader.readAsText(file);
+}
+ 
+function resetAll() {
+  if (!confirm('Clear all saved data?')) return;
+  try { localStorage.removeItem(SK); localStorage.removeItem(SKL); } catch(err) {}
+  currentData = null; prevData = null; prevLabel = null;
+  document.getElementById('week-badges').innerHTML = '<span class="badge">No data uploaded</span>';
+  document.getElementById('upload-title').textContent = "Upload this week's CSV";
+  document.getElementById('upload-subtitle').textContent = 'Drag & drop or click to browse — Ads Manager exported CSV';
+  document.getElementById('dashboard-content').innerHTML = '<div class="empty-state">Upload your first CSV to see the dashboard.</div>';
+}
+ 
+function loadFromStorage() {
+  try {
+    const raw = localStorage.getItem(SK), label = localStorage.getItem(SKL);
+    if (raw && label) { prevData = JSON.parse(raw); prevLabel = label; updateBadges(); }
+  } catch(err) {}
+}
+ 
+const dz = document.getElementById('drop-zone'), ci = document.getElementById('csv-input');
+ci.addEventListener('change', function(e){ if (e.target.files[0]) handleFile(e.target.files[0]); });
+dz.addEventListener('dragover', function(e){ e.preventDefault(); dz.style.background='var(--bg2)'; });
+dz.addEventListener('dragleave', function(){ dz.style.background='var(--bg)'; });
+dz.addEventListener('drop', function(e){ e.preventDefault(); dz.style.background='var(--bg)'; const f=e.dataTransfer.files[0]; if(f&&f.name.endsWith('.csv')) handleFile(f); });
+loadFromStorage();
+</script>
+</body>
+</html>
