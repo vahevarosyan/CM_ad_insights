@@ -26,342 +26,340 @@
       }
     }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg3); color: var(--text); min-height: 100vh; }
- 
-    /* ── Top nav ── */
-    .top-nav { background: var(--bg); border-bottom: 0.5px solid var(--border2); padding: 0 2rem; display: flex; align-items: center; gap: 0; position: sticky; top: 0; z-index: 100; }
+    .top-nav { background: var(--bg); border-bottom: 0.5px solid var(--border2); padding: 0 2rem; display: flex; align-items: center; position: sticky; top: 0; z-index: 100; }
     .nav-brand { font-size: 15px; font-weight: 500; color: var(--text); padding: 1rem 1.5rem 1rem 0; border-right: 0.5px solid var(--border); margin-right: 1rem; white-space: nowrap; }
-    .nav-tab { font-size: 14px; padding: 1.1rem 1.25rem; cursor: pointer; color: var(--text2); border-bottom: 2px solid transparent; margin-bottom: -0.5px; transition: color 0.15s; white-space: nowrap; }
+    .nav-tab { font-size: 14px; padding: 1.1rem 1.25rem; cursor: pointer; color: var(--text2); border-bottom: 2px solid transparent; margin-bottom: -0.5px; white-space: nowrap; }
     .nav-tab:hover { color: var(--text); }
     .nav-tab.active { color: var(--text); border-bottom-color: var(--text); font-weight: 500; }
- 
-    /* ── Page wrapper ── */
+    .nav-right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+    .download-btn { font-size: 13px; padding: 6px 14px; border: 0.5px solid var(--border2); border-radius: var(--radius); cursor: pointer; color: var(--text); background: var(--bg2); white-space: nowrap; }
+    .download-btn:hover { background: var(--bg3); }
+    .download-btn.ready { background: var(--info-bg); color: var(--info-text); border-color: var(--info-border); }
     .page { display: none; max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem; }
     .page.active { display: block; }
- 
-    /* ── Section headings ── */
-    .page-title { font-size: 20px; font-weight: 500; margin-bottom: 1.5rem; color: var(--text); }
- 
-    /* ── Period badges ── */
+    .page-title { font-size: 20px; font-weight: 500; margin-bottom: 1.5rem; }
     .period-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 10px; }
     .badges { display: flex; gap: 8px; flex-wrap: wrap; }
     .badge { font-size: 12px; padding: 4px 10px; border-radius: var(--radius); border: 0.5px solid var(--border2); color: var(--text2); background: var(--bg2); }
     .badge.current { background: var(--info-bg); color: var(--info-text); border-color: var(--info-border); }
- 
-    /* ── Upload zones ── */
-    .upload-area { border: 1.5px dashed var(--border2); border-radius: var(--radius-lg); padding: 1.75rem; text-align: center; cursor: pointer; margin-bottom: 1.5rem; transition: background 0.15s; background: var(--bg); }
+    .upload-area { border: 1.5px dashed var(--border2); border-radius: var(--radius-lg); padding: 1.75rem; text-align: center; cursor: pointer; margin-bottom: 1.5rem; background: var(--bg); transition: background 0.15s; }
     .upload-area:hover { background: var(--bg2); }
     .upload-area strong { font-size: 15px; font-weight: 500; display: block; margin-bottom: 5px; }
     .upload-area p { font-size: 13px; color: var(--text2); }
     .upload-area input { display: none; }
     .upload-btn-label { display: inline-block; margin-top: 10px; font-size: 13px; padding: 5px 14px; border: 0.5px solid var(--border2); border-radius: var(--radius); cursor: pointer; color: var(--text); background: var(--bg); }
- 
     .upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.5rem; }
     @media (max-width: 520px) { .upload-grid { grid-template-columns: 1fr; } }
-    .upload-slot { border: 1px dashed var(--border2); border-radius: var(--radius); padding: 11px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: background 0.15s; background: var(--bg); }
+    .upload-slot { border: 1px dashed var(--border2); border-radius: var(--radius); padding: 11px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; background: var(--bg); transition: background 0.15s; }
     .upload-slot:hover { background: var(--bg2); }
     .upload-slot.filled { border-style: solid; border-color: var(--info-border); background: var(--info-bg); }
     .slot-icon { width: 28px; height: 28px; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex-shrink: 0; }
     .slot-icon.fb { background: #1877F2; color: #fff; }
     .slot-icon.ig { background: #E1306C; color: #fff; }
-    .slot-text { flex: 1; }
     .slot-label { font-size: 13px; font-weight: 500; color: var(--text); }
     .slot-sub { font-size: 11px; color: var(--text2); margin-top: 2px; }
     .slot-sub.ok { color: var(--info-text); }
     .upload-slot input { display: none; }
     .upload-section-title { font-size: 12px; font-weight: 500; color: var(--text3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; margin-top: 1.25rem; }
- 
-    /* ── KPI cards ── */
     .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 1.5rem; }
     .kpi-card { background: var(--bg2); border-radius: var(--radius); padding: 1rem; }
     .kpi-label { font-size: 12px; color: var(--text2); margin-bottom: 4px; }
-    .kpi-value { font-size: 21px; font-weight: 500; color: var(--text); }
+    .kpi-value { font-size: 21px; font-weight: 500; }
     .kpi-delta { font-size: 12px; margin-top: 4px; }
-    .d-up { color: var(--success-text); }
-    .d-down { color: var(--danger-text); }
-    .d-neutral { color: var(--text3); }
- 
-    /* ── Chart row ── */
+    .d-up { color: var(--success-text); } .d-down { color: var(--danger-text); } .d-neutral { color: var(--text3); }
     .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 1.5rem; }
     @media (max-width: 540px) { .chart-row { grid-template-columns: 1fr; } }
     .chart-box { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 1rem; }
     .chart-label { font-size: 13px; color: var(--text2); font-weight: 500; margin-bottom: 10px; }
- 
-    /* ── Tables ── */
     .table-wrap { overflow-x: auto; border: 0.5px solid var(--border); border-radius: var(--radius-lg); background: var(--bg); margin-bottom: 1.5rem; }
     table { width: 100%; border-collapse: collapse; font-size: 13px; }
     th { text-align: left; padding: 9px 14px; font-weight: 500; color: var(--text2); border-bottom: 0.5px solid var(--border); background: var(--bg2); white-space: nowrap; }
     th.r { text-align: right; }
     td { padding: 10px 14px; border-bottom: 0.5px solid var(--border); color: var(--text); white-space: nowrap; vertical-align: middle; }
     td.r { text-align: right; font-variant-numeric: tabular-nums; }
-    tr:last-child td { border-bottom: none; }
-    tr:hover td { background: var(--bg2); }
-    .metric-name { font-weight: 500; }
-    .metric-desc { font-size: 11px; color: var(--text3); margin-top: 1px; }
- 
-    /* ── Pills ── */
+    tr:last-child td { border-bottom: none; } tr:hover td { background: var(--bg2); }
+    .metric-name { font-weight: 500; } .metric-desc { font-size: 11px; color: var(--text3); margin-top: 1px; }
     .pill { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 99px; font-weight: 500; }
     .pill-up { background: var(--success-bg); color: var(--success-text); }
     .pill-down { background: var(--danger-bg); color: var(--danger-text); }
     .pill-neutral { background: var(--bg2); color: var(--text3); }
     .pill-new { background: var(--info-bg); color: var(--info-text); font-size: 10px; }
     .no-data { font-size: 13px; color: var(--text3); }
- 
-    /* ── Insights ── */
     .insights { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.5rem; }
     .ins-card { border-radius: var(--radius); padding: 11px 15px; font-size: 13px; border: 0.5px solid; }
     .ins-good { background: var(--success-bg); color: var(--success-text); border-color: var(--success-border); }
     .ins-bad { background: var(--danger-bg); color: var(--danger-text); border-color: var(--danger-border); }
     .ins-info { background: var(--info-bg); color: var(--info-text); border-color: var(--info-border); }
- 
-    /* ── Tabs inside page ── */
     .inner-tabs { display: flex; gap: 4px; margin-bottom: 1rem; border-bottom: 0.5px solid var(--border); }
     .itab { font-size: 13px; padding: 6px 14px; cursor: pointer; color: var(--text2); border-bottom: 2px solid transparent; margin-bottom: -0.5px; }
     .itab.active { color: var(--text); border-bottom-color: var(--text); font-weight: 500; }
- 
-    /* ── Overview combined ── */
     .overview-section { margin-bottom: 2rem; }
     .overview-title { font-size: 14px; font-weight: 500; color: var(--text2); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
     .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
-    .dot-fb { background: #1877F2; }
-    .dot-ig { background: #E1306C; }
-    .dot-ads { background: #378ADD; }
- 
-    /* ── Misc ── */
+    .dot-fb { background: #1877F2; } .dot-ig { background: #E1306C; } .dot-ads { background: #378ADD; }
     .empty-state { text-align: center; padding: 3rem 1rem; color: var(--text2); font-size: 14px; }
     .reset-btn { font-size: 12px; padding: 4px 10px; border: 0.5px solid var(--border2); border-radius: var(--radius); cursor: pointer; color: var(--danger-text); background: transparent; }
     .reset-btn:hover { background: var(--danger-bg); }
     .action-btn { font-size: 13px; padding: 6px 14px; border: 0.5px solid var(--border2); border-radius: var(--radius); cursor: pointer; color: var(--text); background: var(--bg); }
     .action-btn:hover { background: var(--bg2); }
     .bottom-row { display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; flex-wrap: wrap; gap: 8px; }
+    /* Report view — hidden upload UI */
+    body.report-mode .upload-area,
+    body.report-mode .upload-grid,
+    body.report-mode .upload-section-title,
+    body.report-mode .bottom-row,
+    body.report-mode .inner-tabs,
+    body.report-mode #ads-upload-title,
+    body.report-mode .nav-right { display: none !important; }
+    body.report-mode .top-nav { padding: 0 2rem; }
+    .report-banner { display: none; background: var(--info-bg); color: var(--info-text); border-bottom: 0.5px solid var(--info-border); padding: 8px 2rem; font-size: 13px; text-align: center; }
+    body.report-mode .report-banner { display: block; }
   </style>
 </head>
 <body>
  
+<div class="report-banner" id="report-banner">📊 Report — read-only view</div>
+ 
 <nav class="top-nav">
   <div class="nav-brand">CM Insights</div>
-  <div class="nav-tab active" onclick="switchPage('ads')">Ad Insights</div>
-  <div class="nav-tab" onclick="switchPage('page')">Page Insights</div>
-  <div class="nav-tab" onclick="switchPage('overview')">Overview</div>
+  <div class="nav-tab active" onclick="switchPage('ads',this)">Ad Insights</div>
+  <div class="nav-tab" onclick="switchPage('page',this)">Page Insights</div>
+  <div class="nav-tab" onclick="switchPage('overview',this)">Overview</div>
+  <div class="nav-right">
+    <button class="download-btn" id="download-btn" onclick="downloadReport()">⬇ Download Report</button>
+    <button class="reset-btn" onclick="resetAll()" style="margin:0;">Clear all</button>
+  </div>
 </nav>
  
-<!-- ══════════════ AD INSIGHTS ══════════════ -->
+<!-- AD INSIGHTS -->
 <div class="page active" id="page-ads">
   <div class="period-row">
     <div class="page-title">Ad Insights</div>
     <div class="badges" id="ads-badges"><span class="badge">No data</span></div>
   </div>
- 
   <div class="upload-area" id="ads-drop" onclick="document.getElementById('ads-csv').click()">
-    <strong id="ads-upload-title">Upload this week's CSV</strong>
+    <strong id="ads-upload-title">Upload this period's CSV</strong>
     <p id="ads-upload-sub">Ads Manager exported CSV — drag & drop or click</p>
     <label class="upload-btn-label">Choose file</label>
     <input type="file" id="ads-csv" accept=".csv">
   </div>
- 
   <div id="ads-content"><div class="empty-state">Upload your first CSV to see data.</div></div>
- 
-  <div class="bottom-row">
-    <div></div>
-    <button class="reset-btn" onclick="resetAds()">Clear Ads data</button>
-  </div>
+  <div class="bottom-row"><div></div><button class="reset-btn" onclick="resetAds()">Clear Ads data</button></div>
 </div>
  
-<!-- ══════════════ PAGE INSIGHTS ══════════════ -->
+<!-- PAGE INSIGHTS -->
 <div class="page" id="page-page">
   <div class="period-row">
     <div class="page-title">Page Insights</div>
     <div class="badges" id="pi-badges"><span class="badge">No data</span></div>
   </div>
- 
   <div class="upload-section-title">Facebook</div>
   <div class="upload-grid" id="fb-slots"></div>
   <div class="upload-section-title">Instagram</div>
   <div class="upload-grid" id="ig-slots"></div>
- 
   <div class="inner-tabs">
-    <div class="itab active" onclick="switchPiView('current', event)">Current period</div>
-    <div class="itab" onclick="switchPiView('compare', event)">Compare periods</div>
+    <div class="itab active" onclick="switchPiView('current',this)">Current period</div>
+    <div class="itab" onclick="switchPiView('compare',this)">Compare periods</div>
   </div>
- 
   <div id="pi-content"><div class="empty-state">Upload at least one CSV to see data.</div></div>
- 
   <div class="bottom-row">
     <button class="action-btn" onclick="startNewPeriod()">Start new period ↗</button>
     <button class="reset-btn" onclick="resetPI()">Clear Page Insights data</button>
   </div>
 </div>
  
-<!-- ══════════════ OVERVIEW ══════════════ -->
+<!-- OVERVIEW -->
 <div class="page" id="page-overview">
   <div class="page-title">Overview</div>
-  <div id="overview-content"><div class="empty-state">Upload data in Ad Insights and Page Insights tabs to see the combined overview.</div></div>
+  <div id="overview-content"><div class="empty-state">Upload data in Ad Insights and Page Insights to see the combined overview.</div></div>
 </div>
  
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-/* ─────────────── UTILS ─────────────── */
+/* ── UTILS ── */
+function decodeCSV(buffer) {
+  try {
+    const bytes = new Uint8Array(buffer);
+    if (bytes[0]===0xFF && bytes[1]===0xFE) return new TextDecoder('utf-16le').decode(buffer);
+    if (bytes[0]===0xFE && bytes[1]===0xFF) return new TextDecoder('utf-16be').decode(buffer);
+    if (bytes[0]===0xEF && bytes[1]===0xBB && bytes[2]===0xBF) return new TextDecoder('utf-8').decode(buffer).slice(1);
+  } catch(e){}
+  return new TextDecoder('utf-8').decode(buffer);
+}
+ 
 function parseCSV(text) {
   const lines = text.split(/\r?\n/).filter(function(l){ return l.trim(); });
   if (lines.length < 2) return null;
-  const headers = splitLine(lines[0]);
+  let start = 0;
+  if (lines[0].toLowerCase().startsWith('sep=')) start = 1;
+  const headers = splitLine(lines[start]).map(function(h){ return h.trim().toLowerCase().replace(/['"]/g,''); });
   const rows = [];
-  for (let i = 1; i < lines.length; i++) {
+  for (let i = start+1; i < lines.length; i++) {
     const vals = splitLine(lines[i]);
     if (vals.length < 2) continue;
     const row = {};
-    headers.forEach(function(h, idx){ row[h.trim().toLowerCase()] = (vals[idx]||'').trim(); });
+    headers.forEach(function(h,idx){ row[h] = (vals[idx]||'').trim().replace(/^"|"$/g,''); });
     rows.push(row);
   }
   return { headers, rows };
 }
+ 
+function parsePageInsightsCSV(text) {
+  const lines = text.split(/\r?\n/).filter(function(l){ return l.trim(); });
+  let dataStart = -1;
+  for (let i = 0; i < lines.length; i++) {
+    const clean = lines[i].replace(/['"]/g,'').toLowerCase();
+    if (clean.includes('date') && clean.includes('primary')) { dataStart = i; break; }
+  }
+  if (dataStart === -1) return null;
+  let total = 0;
+  for (let i = dataStart+1; i < lines.length; i++) {
+    const parts = splitLine(lines[i]);
+    if (parts.length >= 2) {
+      const val = parseFloat(parts[1].replace(/['"]/g,'').replace(/[^0-9.\-]/g,''));
+      if (!isNaN(val)) total += val;
+    }
+  }
+  return total;
+}
+ 
 function splitLine(line) {
-  const r = []; let cur = '', inQ = false;
-  for (let i = 0; i < line.length; i++) {
-    const c = line[i];
-    if (c === '"') inQ = !inQ;
-    else if (c === ',' && !inQ) { r.push(cur); cur = ''; }
-    else cur += c;
+  const r=[]; let cur='', inQ=false;
+  for (let i=0;i<line.length;i++) {
+    const c=line[i];
+    if (c==='"') inQ=!inQ;
+    else if (c===',' && !inQ){r.push(cur);cur='';}
+    else cur+=c;
   }
   r.push(cur); return r;
 }
+ 
 function findCol(headers, candidates) {
   for (const c of candidates) {
-    const f = headers.find(function(h){ return h.toLowerCase().includes(c.toLowerCase()); });
+    const f = headers.find(function(h){ return h.includes(c.toLowerCase()); });
     if (f) return f;
   }
   return null;
 }
-function toNum(v) { if (!v) return 0; return parseFloat(String(v).replace(/[^0-9.\-]/g,'')) || 0; }
-function fmt(n, d) { d = d===undefined?0:d; if (n===null||isNaN(n)) return '—'; return n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d}); }
-function fmtC(n) { if (n===null||isNaN(n)) return '—'; return '$'+fmt(n,2); }
-function fmtBig(n) {
-  if (n===null||n===undefined) return '—';
-  if (n>=1000000) return (n/1000000).toFixed(1)+'M';
-  if (n>=1000) return (n/1000).toFixed(1)+'K';
-  return Math.round(n).toLocaleString();
-}
-function delta(c, p) { if (!p||p===0) return null; return ((c-p)/Math.abs(p))*100; }
-function pillHtml(pct, inv) {
-  if (pct===null) return '';
-  const good = inv ? pct<0 : pct>0;
-  const cls = Math.abs(pct)<0.5?'pill-neutral':(good?'pill-up':'pill-down');
-  return '<span class="pill '+cls+'">'+(pct>0?'+':'')+pct.toFixed(1)+'%</span>';
-}
-function deltaSpan(pct, inv) {
-  if (pct===null) return '<span class="d-neutral">—</span>';
-  const good = inv ? pct<0 : pct>0;
-  const cls = Math.abs(pct)<0.5?'d-neutral':(good?'d-up':'d-down');
-  return '<span class="'+cls+'">'+(pct>0?'+':'')+pct.toFixed(1)+'%</span>';
-}
-const NEW_PILL = '<span class="pill pill-new">New</span>';
  
-/* ─────────────── PAGE SWITCHING ─────────────── */
-function switchPage(id) {
+function toNum(v){ if(!v) return 0; return parseFloat(String(v).replace(/[^0-9.\-]/g,''))||0; }
+function fmt(n,d){ d=d===undefined?0:d; if(n===null||isNaN(n)) return '—'; return n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d}); }
+function fmtC(n){ if(n===null||isNaN(n)) return '—'; return '$'+fmt(n,2); }
+function fmtBig(n){ if(n===null||n===undefined) return '—'; if(n>=1000000) return (n/1000000).toFixed(1)+'M'; if(n>=1000) return (n/1000).toFixed(1)+'K'; return Math.round(n).toLocaleString(); }
+function delta(c,p){ if(!p||p===0) return null; return ((c-p)/Math.abs(p))*100; }
+function pillHtml(pct,inv){ if(pct===null) return ''; const good=inv?pct<0:pct>0; const cls=Math.abs(pct)<0.5?'pill-neutral':(good?'pill-up':'pill-down'); return '<span class="pill '+cls+'">'+(pct>0?'+':'')+pct.toFixed(1)+'%</span>'; }
+function deltaSpan(pct,inv){ if(pct===null) return '<span class="d-neutral">—</span>'; const good=inv?pct<0:pct>0; const cls=Math.abs(pct)<0.5?'d-neutral':(good?'d-up':'d-down'); return '<span class="'+cls+'">'+(pct>0?'+':'')+pct.toFixed(1)+'%</span>'; }
+const NEW_PILL='<span class="pill pill-new">New</span>';
+ 
+function readFileBuffer(file, cb) {
+  const reader = new FileReader();
+  reader.onload = function(e){ cb(e.target.result); };
+  reader.readAsArrayBuffer(file);
+}
+ 
+/* ── PAGE SWITCHING ── */
+function switchPage(id, el) {
   document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
   document.querySelectorAll('.nav-tab').forEach(function(t){ t.classList.remove('active'); });
   document.getElementById('page-'+id).classList.add('active');
-  event.target.classList.add('active');
-  if (id === 'overview') renderOverview();
+  if(el) el.classList.add('active');
+  if(id==='overview') renderOverview();
 }
  
-/* ══════════════════════════════════════════════
-   AD INSIGHTS
-══════════════════════════════════════════════ */
-const ADS_SK = 'ads_curr_v1', ADS_SKL = 'ads_curr_label_v1';
-const ADS_PSK = 'ads_prev_v1', ADS_PSKL = 'ads_prev_label_v1';
-let adsData = null, adsPrevData = null, adsPrevLabel = null, adsActiveTab = 'ads';
+/* ══ AD INSIGHTS ══ */
+const ADS_SK='ads_curr_v2',ADS_SKL='ads_curr_label_v2',ADS_PSK='ads_prev_v2',ADS_PSKL='ads_prev_label_v2';
+let adsData=null,adsPrevData=null,adsPrevLabel=null,adsActiveTab='ads';
  
-function loadAdsStorage() {
-  try {
-    const r = localStorage.getItem(ADS_SK), l = localStorage.getItem(ADS_SKL);
-    if (r && l) { adsData = JSON.parse(r); adsData.label = l; }
-    const pr = localStorage.getItem(ADS_PSK), pl = localStorage.getItem(ADS_PSKL);
-    if (pr && pl) { adsPrevData = JSON.parse(pr); adsPrevData.label = pl; adsPrevLabel = pl; }
-  } catch(e) {}
+function loadAdsStorage(){
+  try{
+    const r=localStorage.getItem(ADS_SK),l=localStorage.getItem(ADS_SKL);
+    if(r&&l){adsData=JSON.parse(r);adsData.label=l;}
+    const pr=localStorage.getItem(ADS_PSK),pl=localStorage.getItem(ADS_PSKL);
+    if(pr&&pl){adsPrevData=JSON.parse(pr);adsPrevData.label=pl;adsPrevLabel=pl;}
+  }catch(e){}
 }
  
-function extractAds(rows, headers) {
-  const cR = findCol(headers, ['messaging conversations started','conversations started','results','leads']);
-  const cCPR = findCol(headers, ['cost per result','cost per lead']);
-  const cSp = findCol(headers, ['amount spent','spend']);
-  const cAd = findCol(headers, ['ad name','ad set name','campaign name']);
-  const cAge = findCol(headers, ['age']);
-  const cRch = findCol(headers, ['reach']);
-  const cCTR = findCol(headers, ['ctr','click-through rate']);
-  const cFrq = findCol(headers, ['frequency']);
-  let totalSpend=0, totalResults=0, totalReach=0;
-  const adRows = [];
+function extractAds(rows,headers){
+  const cR=findCol(headers,['results']);
+  const cCPR=findCol(headers,['cost per result']);
+  const cSp=findCol(headers,['amount spent']);
+  const cAd=findCol(headers,['ad name']);
+  const cAge=findCol(headers,['age']);
+  const cRch=findCol(headers,['reach']);
+  const cCTR=findCol(headers,['ctr','click-through rate']);
+  const cFrq=findCol(headers,['frequency']);
+  let totalSpend=0,totalResults=0,totalReach=0;
+  const adRows=[];
   rows.forEach(function(row){
-    const sp=toNum(row[cSp]), res=toNum(row[cR]);
-    totalSpend+=sp; totalResults+=res; totalReach+=toNum(row[cRch]);
-    adRows.push({ name:row[cAd]||'Unknown', results:res, cpr:toNum(row[cCPR])||(res>0?sp/res:0), spend:sp, age:row[cAge]||'', ctr:toNum(row[cCTR]), freq:toNum(row[cFrq]) });
+    const sp=toNum(row[cSp]),res=toNum(row[cR]);
+    totalSpend+=sp;totalResults+=res;totalReach+=toNum(row[cRch]);
+    adRows.push({name:row[cAd]||'Unknown',results:res,cpr:toNum(row[cCPR])||(res>0?sp/res:0),spend:sp,age:row[cAge]||'',ctr:toNum(row[cCTR]),freq:toNum(row[cFrq])});
   });
-  const avgCPR = totalResults>0?totalSpend/totalResults:0;
-  const avgCTR = adRows.length>0?adRows.reduce(function(s,r){return s+r.ctr;},0)/adRows.length:0;
-  const avgFreq = adRows.length>0?adRows.reduce(function(s,r){return s+r.freq;},0)/adRows.length:0;
-  return { totalSpend, totalResults, avgCPR, totalReach, avgCTR, avgFreq, adRows };
+  const avgCPR=totalResults>0?totalSpend/totalResults:0;
+  const avgCTR=adRows.length>0?adRows.reduce(function(s,r){return s+r.ctr;},0)/adRows.length:0;
+  const avgFreq=adRows.length>0?adRows.reduce(function(s,r){return s+r.freq;},0)/adRows.length:0;
+  return {totalSpend,totalResults,avgCPR,totalReach,avgCTR,avgFreq,adRows};
 }
  
-function handleAdsFile(file) {
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const parsed = parseCSV(e.target.result);
-    if (!parsed || !parsed.rows.length) { alert('No data found.'); return; }
-    parsed.label = file.name.replace('.csv','').replace(/_/g,' ');
-    if (adsData) {
-      try { localStorage.setItem(ADS_PSK, JSON.stringify({rows:adsData.rows,headers:adsData.headers})); localStorage.setItem(ADS_PSKL, adsData.label); } catch(e){}
-      adsPrevData = adsData; adsPrevLabel = adsData.label;
+function handleAdsFile(file){
+  readFileBuffer(file,function(buffer){
+    const text=decodeCSV(buffer);
+    const parsed=parseCSV(text);
+    if(!parsed||!parsed.rows.length){alert('No data found in CSV.');return;}
+    parsed.label=file.name.replace('.csv','').replace(/_/g,' ');
+    if(adsData){
+      try{localStorage.setItem(ADS_PSK,JSON.stringify({rows:adsData.rows,headers:adsData.headers}));localStorage.setItem(ADS_PSKL,adsData.label);}catch(e){}
+      adsPrevData=adsData;adsPrevLabel=adsData.label;
     }
-    adsData = parsed;
-    try { localStorage.setItem(ADS_SK, JSON.stringify({rows:parsed.rows,headers:parsed.headers})); localStorage.setItem(ADS_SKL, parsed.label); } catch(e){}
-    adsActiveTab = 'ads';
-    updateAdsBadges(); updateAdsUploadZone(); renderAds();
-  };
-  reader.readAsText(file);
+    adsData=parsed;
+    try{localStorage.setItem(ADS_SK,JSON.stringify({rows:parsed.rows,headers:parsed.headers}));localStorage.setItem(ADS_SKL,parsed.label);}catch(e){}
+    adsActiveTab='ads';
+    updateAdsBadges();updateAdsUploadZone();renderAds();updateDownloadBtn();
+  });
 }
  
-function updateAdsBadges() {
-  let h = '';
-  if (adsPrevLabel) h += '<span class="badge">Prev: '+adsPrevLabel+'</span>';
-  if (adsData) h += '<span class="badge current">Current: '+adsData.label+'</span>';
-  document.getElementById('ads-badges').innerHTML = h || '<span class="badge">No data</span>';
+function updateAdsBadges(){
+  let h='';
+  if(adsPrevLabel) h+='<span class="badge">Prev: '+adsPrevLabel+'</span>';
+  if(adsData) h+='<span class="badge current">Current: '+adsData.label+'</span>';
+  document.getElementById('ads-badges').innerHTML=h||'<span class="badge">No data</span>';
 }
  
-function updateAdsUploadZone() {
-  if (!adsData) return;
-  document.getElementById('ads-upload-title').textContent = "Upload next period's CSV";
-  document.getElementById('ads-upload-sub').textContent = 'Current will become previous for comparison';
+function updateAdsUploadZone(){
+  if(!adsData) return;
+  document.getElementById('ads-upload-title').textContent="Upload next period's CSV";
+  document.getElementById('ads-upload-sub').textContent='Current will become previous for comparison';
 }
  
-function renderAds() {
-  if (!adsData) { document.getElementById('ads-content').innerHTML = '<div class="empty-state">Upload your first CSV to see data.</div>'; return; }
-  const curr = extractAds(adsData.rows, adsData.headers);
-  const prev = adsPrevData ? extractAds(adsPrevData.rows, adsPrevData.headers) : null;
+function renderAds(){
+  if(!adsData){document.getElementById('ads-content').innerHTML='<div class="empty-state">Upload your first CSV to see data.</div>';return;}
+  const curr=extractAds(adsData.rows,adsData.headers);
+  const prev=adsPrevData?extractAds(adsPrevData.rows,adsPrevData.headers):null;
   const dSp=prev?delta(curr.totalSpend,prev.totalSpend):null;
   const dR=prev?delta(curr.totalResults,prev.totalResults):null;
   const dCPR=prev?delta(curr.avgCPR,prev.avgCPR):null;
   const dRch=prev?delta(curr.totalReach,prev.totalReach):null;
   const dCTR=prev?delta(curr.avgCTR,prev.avgCTR):null;
   const dFrq=prev?delta(curr.avgFreq,prev.avgFreq):null;
-  const ins = adsInsights(curr, prev, dSp, dR, dCPR, dCTR, dFrq);
-  let h = '';
-  if (ins.length) { h += '<div class="insights">'; ins.forEach(function(i){ h += '<div class="ins-card ins-'+i.t+'">'+i.m+'</div>'; }); h += '</div>'; }
-  h += '<div class="kpi-grid">';
-  h += kpi('Conversations', fmt(curr.totalResults), deltaSpan(dR,false));
-  h += kpi('Cost per result', fmtC(curr.avgCPR), deltaSpan(dCPR,true));
-  h += kpi('Amount spent', fmtC(curr.totalSpend), deltaSpan(dSp,true));
-  h += kpi('Reach', fmt(curr.totalReach), deltaSpan(dRch,false));
-  if (curr.avgCTR>0) h += kpi('Avg CTR', curr.avgCTR.toFixed(2)+'%', deltaSpan(dCTR,false));
-  if (curr.avgFreq>0) h += kpi('Avg frequency', curr.avgFreq.toFixed(2), deltaSpan(dFrq,true));
-  h += '</div>';
-  if (prev) {
-    h += '<div class="chart-row"><div class="chart-box"><div class="chart-label">Conversations</div><div style="position:relative;height:160px;"><canvas id="ac1" role="img" aria-label="Conversations comparison"></canvas></div></div>'
-      + '<div class="chart-box"><div class="chart-label">Spend</div><div style="position:relative;height:160px;"><canvas id="ac2" role="img" aria-label="Spend comparison"></canvas></div></div></div>';
+  const ins=adsInsights(curr,prev,dSp,dR,dCPR,dCTR,dFrq);
+  let h='';
+  if(ins.length){h+='<div class="insights">';ins.forEach(function(i){h+='<div class="ins-card ins-'+i.t+'">'+i.m+'</div>';});h+='</div>';}
+  h+='<div class="kpi-grid">';
+  h+=kpi('Conversations',fmt(curr.totalResults),deltaSpan(dR,false));
+  h+=kpi('Cost per result',fmtC(curr.avgCPR),deltaSpan(dCPR,true));
+  h+=kpi('Amount spent',fmtC(curr.totalSpend),deltaSpan(dSp,true));
+  h+=kpi('Reach',fmt(curr.totalReach),deltaSpan(dRch,false));
+  if(curr.avgCTR>0) h+=kpi('Avg CTR',curr.avgCTR.toFixed(2)+'%',deltaSpan(dCTR,false));
+  if(curr.avgFreq>0) h+=kpi('Avg frequency',curr.avgFreq.toFixed(2),deltaSpan(dFrq,true));
+  h+='</div>';
+  if(prev){
+    h+='<div class="chart-row"><div class="chart-box"><div class="chart-label">Conversations</div><div style="position:relative;height:160px;"><canvas id="ac1" role="img" aria-label="Conversations comparison"></canvas></div></div>'
+     +'<div class="chart-box"><div class="chart-label">Spend</div><div style="position:relative;height:160px;"><canvas id="ac2" role="img" aria-label="Spend comparison"></canvas></div></div></div>';
   }
-  h += '<div class="inner-tabs"><div class="itab '+(adsActiveTab==='ads'?'active':'')+'" onclick="switchAdsTab(\'ads\',event)">Ads breakdown</div><div class="itab '+(adsActiveTab==='age'?'active':'')+'" onclick="switchAdsTab(\'age\',event)">Age breakdown</div></div>';
-  h += adsActiveTab==='ads' ? renderAdsTable(curr,prev) : renderAgeTable(curr,prev);
-  document.getElementById('ads-content').innerHTML = h;
-  if (prev) {
+  h+='<div class="inner-tabs"><div class="itab '+(adsActiveTab==='ads'?'active':'')+'" onclick="switchAdsTab(\'ads\',this)">Ads breakdown</div><div class="itab '+(adsActiveTab==='age'?'active':'')+'" onclick="switchAdsTab(\'age\',this)">Age breakdown</div></div>';
+  h+=adsActiveTab==='ads'?renderAdsTable(curr,prev):renderAgeTable(curr,prev);
+  document.getElementById('ads-content').innerHTML=h;
+  if(prev){
     requestAnimationFrame(function(){
       renderBar('ac1',['Last','This'],[prev.totalResults,curr.totalResults],['#888780','#378ADD'],false);
       renderBar('ac2',['Last','This'],[prev.totalSpend,curr.totalSpend],['#888780','#378ADD'],true);
@@ -369,332 +367,428 @@ function renderAds() {
   }
 }
  
-function kpi(label, value, dh) { return '<div class="kpi-card"><div class="kpi-label">'+label+'</div><div class="kpi-value">'+value+'</div><div class="kpi-delta">'+dh+'</div></div>'; }
+function kpi(label,value,dh){ return '<div class="kpi-card"><div class="kpi-label">'+label+'</div><div class="kpi-value">'+value+'</div><div class="kpi-delta">'+dh+'</div></div>'; }
  
-function adsInsights(curr, prev, dSp, dR, dCPR, dCTR, dFrq) {
-  const ins = [];
-  if (!prev) { ins.push({t:'info',m:"First period uploaded. Upload next period to compare."}); return ins; }
-  if (dR!==null&&dR>15) ins.push({t:'good',m:'Conversations up '+fmt(dR,1)+'% — strong improvement.'});
-  if (dR!==null&&dR<-15) ins.push({t:'bad',m:'Conversations down '+fmt(Math.abs(dR),1)+'% — check budget or creative fatigue.'});
-  if (dCPR!==null&&dCPR<-10) ins.push({t:'good',m:'CPR improved '+fmt(Math.abs(dCPR),1)+'% — algorithm optimizing well.'});
-  if (dCPR!==null&&dCPR>20) ins.push({t:'bad',m:'CPR up '+fmt(dCPR,1)+'% — consider refreshing creatives.'});
-  if (curr.avgFreq>3.5) ins.push({t:'bad',m:'Frequency '+curr.avgFreq.toFixed(1)+' — possible ad fatigue.'});
-  if (dSp!==null&&Math.abs(dSp)>30) ins.push({t:'info',m:'Spend '+(dSp>0?'increased':'decreased')+' '+fmt(Math.abs(dSp),1)+'%.'});
-  if (dCTR!==null&&dCTR<-20) ins.push({t:'bad',m:'CTR down '+fmt(Math.abs(dCTR),1)+'% — creative engagement declining.'});
-  if (dCTR!==null&&dCTR>20) ins.push({t:'good',m:'CTR up '+fmt(dCTR,1)+'% — creatives resonating better.'});
+function adsInsights(curr,prev,dSp,dR,dCPR,dCTR,dFrq){
+  const ins=[];
+  if(!prev){ins.push({t:'info',m:"First period uploaded. Upload next period to compare."});return ins;}
+  if(dR!==null&&dR>15) ins.push({t:'good',m:'Conversations up '+fmt(dR,1)+'% — strong improvement.'});
+  if(dR!==null&&dR<-15) ins.push({t:'bad',m:'Conversations down '+fmt(Math.abs(dR),1)+'% — check budget or creative fatigue.'});
+  if(dCPR!==null&&dCPR<-10) ins.push({t:'good',m:'CPR improved '+fmt(Math.abs(dCPR),1)+'% — algorithm optimizing well.'});
+  if(dCPR!==null&&dCPR>20) ins.push({t:'bad',m:'CPR up '+fmt(dCPR,1)+'% — consider refreshing creatives.'});
+  if(curr.avgFreq>3.5) ins.push({t:'bad',m:'Frequency '+curr.avgFreq.toFixed(1)+' — possible ad fatigue.'});
+  if(dSp!==null&&Math.abs(dSp)>30) ins.push({t:'info',m:'Spend '+(dSp>0?'increased':'decreased')+' '+fmt(Math.abs(dSp),1)+'%.'});
+  if(dCTR!==null&&dCTR<-20) ins.push({t:'bad',m:'CTR down '+fmt(Math.abs(dCTR),1)+'% — creative engagement declining.'});
+  if(dCTR!==null&&dCTR>20) ins.push({t:'good',m:'CTR up '+fmt(dCTR,1)+'% — creatives resonating better.'});
   return ins;
 }
  
-function buildAdMap(data) {
-  const map = {};
-  data.adRows.forEach(function(r){ const k=r.name.trim().toLowerCase(); if(!map[k]) map[k]={results:0,spend:0}; map[k].results+=r.results; map[k].spend+=r.spend; });
-  Object.keys(map).forEach(function(k){ map[k].cpr=map[k].results>0?map[k].spend/map[k].results:0; });
-  return map;
-}
+function buildAdMap(data){ const map={}; data.adRows.forEach(function(r){const k=r.name.trim().toLowerCase();if(!map[k])map[k]={results:0,spend:0};map[k].results+=r.results;map[k].spend+=r.spend;}); Object.keys(map).forEach(function(k){map[k].cpr=map[k].results>0?map[k].spend/map[k].results:0;}); return map; }
  
-function renderAdsTable(curr, prev) {
-  const pm = prev ? buildAdMap(prev) : {};
-  const g = {};
-  curr.adRows.forEach(function(r){ const k=r.name.trim().toLowerCase(); if(!g[k]) g[k]={name:r.name,results:0,spend:0}; g[k].results+=r.results; g[k].spend+=r.spend; });
-  Object.keys(g).forEach(function(k){ g[k].cpr=g[k].results>0?g[k].spend/g[k].results:0; });
-  const sorted = Object.entries(g).sort(function(a,b){return b[1].results-a[1].results;});
-  let h = '<div class="table-wrap"><table><thead><tr><th>Ad name</th><th class="r">Conversations</th>';
-  if (prev) h += '<th class="r">WoW</th>';
-  h += '<th class="r">CPR</th>';
-  if (prev) h += '<th class="r">WoW</th>';
-  h += '<th class="r">Spend</th>';
-  if (prev) h += '<th class="r">WoW</th>';
-  h += '</tr></thead><tbody>';
-  sorted.forEach(function(e){ const k=e[0],d=e[1],p=pm[k]; const isNew=prev&&!p;
+function renderAdsTable(curr,prev){
+  const pm=prev?buildAdMap(prev):{};
+  const g={};
+  curr.adRows.forEach(function(r){const k=r.name.trim().toLowerCase();if(!g[k])g[k]={name:r.name,results:0,spend:0};g[k].results+=r.results;g[k].spend+=r.spend;});
+  Object.keys(g).forEach(function(k){g[k].cpr=g[k].results>0?g[k].spend/g[k].results:0;});
+  const sorted=Object.entries(g).sort(function(a,b){return b[1].results-a[1].results;});
+  let h='<div class="table-wrap"><table><thead><tr><th>Ad name</th><th class="r">Conversations</th>';
+  if(prev) h+='<th class="r">WoW</th>';
+  h+='<th class="r">CPR</th>';
+  if(prev) h+='<th class="r">WoW</th>';
+  h+='<th class="r">Spend</th>';
+  if(prev) h+='<th class="r">WoW</th>';
+  h+='</tr></thead><tbody>';
+  sorted.forEach(function(e){const k=e[0],d=e[1],p=pm[k];const isNew=prev&&!p;
     const dR=(!prev||isNew)?null:delta(d.results,p.results);
     const dC=(!prev||isNew)?null:delta(d.cpr,p.cpr);
     const dS=(!prev||isNew)?null:delta(d.spend,p.spend);
-    h += '<tr><td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;" title="'+d.name+'">'+(d.name.length>32?d.name.slice(0,32)+'…':d.name)+'</td>';
-    h += '<td class="r">'+fmt(d.results)+'</td>';
-    if (prev) h += '<td class="r">'+(isNew?NEW_PILL:pillHtml(dR,false))+'</td>';
-    h += '<td class="r">'+fmtC(d.cpr)+'</td>';
-    if (prev) h += '<td class="r">'+(isNew?'':pillHtml(dC,true))+'</td>';
-    h += '<td class="r">'+fmtC(d.spend)+'</td>';
-    if (prev) h += '<td class="r">'+(isNew?'':pillHtml(dS,true))+'</td>';
-    h += '</tr>';
+    h+='<tr><td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;" title="'+d.name+'">'+(d.name.length>32?d.name.slice(0,32)+'…':d.name)+'</td>';
+    h+='<td class="r">'+fmt(d.results)+'</td>';
+    if(prev) h+='<td class="r">'+(isNew?NEW_PILL:pillHtml(dR,false))+'</td>';
+    h+='<td class="r">'+fmtC(d.cpr)+'</td>';
+    if(prev) h+='<td class="r">'+(isNew?'':pillHtml(dC,true))+'</td>';
+    h+='<td class="r">'+fmtC(d.spend)+'</td>';
+    if(prev) h+='<td class="r">'+(isNew?'':pillHtml(dS,true))+'</td>';
+    h+='</tr>';
   });
-  return h + '</tbody></table></div>';
+  return h+'</tbody></table></div>';
 }
  
-function renderAgeTable(curr, prev) {
-  const g = {}; curr.adRows.forEach(function(r){ if(!r.age) return; const k=r.age.trim().toLowerCase(); if(!g[k]) g[k]={age:r.age,results:0,spend:0}; g[k].results+=r.results; g[k].spend+=r.spend; });
-  const pg = {}; if(prev) prev.adRows.forEach(function(r){ if(!r.age) return; const k=r.age.trim().toLowerCase(); if(!pg[k]) pg[k]={results:0,spend:0}; pg[k].results+=r.results; pg[k].spend+=r.spend; });
-  const sorted = Object.entries(g).sort(function(a,b){return b[1].results-a[1].results;});
-  if (!sorted.length) return '<div class="empty-state">No age data in this CSV.</div>';
-  let h = '<div class="table-wrap"><table><thead><tr><th>Age</th><th class="r">Conversations</th>';
-  if (prev) h += '<th class="r">WoW</th>';
-  h += '<th class="r">Spend</th>';
-  if (prev) h += '<th class="r">WoW</th>';
-  h += '<th class="r">CPR</th></tr></thead><tbody>';
-  sorted.forEach(function(e){ const k=e[0],d=e[1],p=pg[k]; const isNew=prev&&!p;
+function renderAgeTable(curr,prev){
+  const g={};curr.adRows.forEach(function(r){if(!r.age)return;const k=r.age.trim().toLowerCase();if(!g[k])g[k]={age:r.age,results:0,spend:0};g[k].results+=r.results;g[k].spend+=r.spend;});
+  const pg={};if(prev)prev.adRows.forEach(function(r){if(!r.age)return;const k=r.age.trim().toLowerCase();if(!pg[k])pg[k]={results:0,spend:0};pg[k].results+=r.results;pg[k].spend+=r.spend;});
+  const sorted=Object.entries(g).sort(function(a,b){return b[1].results-a[1].results;});
+  if(!sorted.length) return '<div class="empty-state">No age data in this CSV.</div>';
+  let h='<div class="table-wrap"><table><thead><tr><th>Age</th><th class="r">Conversations</th>';
+  if(prev) h+='<th class="r">WoW</th>';
+  h+='<th class="r">Spend</th>';
+  if(prev) h+='<th class="r">WoW</th>';
+  h+='<th class="r">CPR</th></tr></thead><tbody>';
+  sorted.forEach(function(e){const k=e[0],d=e[1],p=pg[k];const isNew=prev&&!p;
     const cpr=d.results>0?d.spend/d.results:0;
     const dR=(!prev||isNew)?null:delta(d.results,p.results);
     const dS=(!prev||isNew)?null:delta(d.spend,p.spend);
-    h += '<tr><td>'+d.age+'</td><td class="r">'+fmt(d.results)+'</td>';
-    if (prev) h += '<td class="r">'+(isNew?NEW_PILL:pillHtml(dR,false))+'</td>';
-    h += '<td class="r">'+fmtC(d.spend)+'</td>';
-    if (prev) h += '<td class="r">'+(isNew?'':pillHtml(dS,true))+'</td>';
-    h += '<td class="r">'+fmtC(cpr)+'</td></tr>';
+    h+='<tr><td>'+d.age+'</td><td class="r">'+fmt(d.results)+'</td>';
+    if(prev) h+='<td class="r">'+(isNew?NEW_PILL:pillHtml(dR,false))+'</td>';
+    h+='<td class="r">'+fmtC(d.spend)+'</td>';
+    if(prev) h+='<td class="r">'+(isNew?'':pillHtml(dS,true))+'</td>';
+    h+='<td class="r">'+fmtC(cpr)+'</td></tr>';
   });
-  return h + '</tbody></table></div>';
+  return h+'</tbody></table></div>';
 }
  
-function switchAdsTab(tab, e) {
-  adsActiveTab = tab;
+function switchAdsTab(tab,el){
+  adsActiveTab=tab;
   document.querySelectorAll('#ads-content .itab').forEach(function(t){t.classList.remove('active');});
-  if(e) e.target.classList.add('active');
+  if(el) el.classList.add('active');
   renderAds();
 }
  
-function resetAds() {
-  if (!confirm('Clear all Ads data?')) return;
-  try { [ADS_SK,ADS_SKL,ADS_PSK,ADS_PSKL].forEach(function(k){localStorage.removeItem(k);}); } catch(e){}
-  adsData=null; adsPrevData=null; adsPrevLabel=null;
-  document.getElementById('ads-upload-title').textContent = "Upload this week's CSV";
-  document.getElementById('ads-upload-sub').textContent = 'Ads Manager exported CSV — drag & drop or click';
-  updateAdsBadges(); renderAds();
+function resetAds(){
+  if(!confirm('Clear all Ads data?')) return;
+  try{[ADS_SK,ADS_SKL,ADS_PSK,ADS_PSKL].forEach(function(k){localStorage.removeItem(k);});}catch(e){}
+  adsData=null;adsPrevData=null;adsPrevLabel=null;
+  document.getElementById('ads-upload-title').textContent="Upload this period's CSV";
+  document.getElementById('ads-upload-sub').textContent='Ads Manager exported CSV — drag & drop or click';
+  updateAdsBadges();renderAds();updateDownloadBtn();
 }
  
-/* ══════════════════════════════════════════════
-   PAGE INSIGHTS
-══════════════════════════════════════════════ */
-const PI_SK = 'pi_v1_', METRICS = [
-  { key:'views',       label:'Views',          desc:'Total content views',           fbCols:['views','total views'], igCols:['views','total views'] },
-  { key:'reach',       label:'Reach / Viewers',desc:'Unique accounts reached',        fbCols:['viewers','reach','unique viewers'], igCols:['reach','viewers'] },
-  { key:'follows',     label:'Follows',         desc:'New followers gained',          fbCols:['follows','new followers'], igCols:['follows','new followers'] },
-  { key:'link_clicks', label:'Link clicks',     desc:'Clicks on bio / profile link',  fbCols:['link clicks','facebook link clicks'], igCols:['link clicks','instagram link clicks'] },
+/* ══ PAGE INSIGHTS ══ */
+const PI_SK='pi_v2_';
+const METRICS=[
+  {key:'views',label:'Views',desc:'Total content views'},
+  {key:'reach',label:'Reach / Viewers',desc:'Unique accounts reached'},
+  {key:'follows',label:'Follows',desc:'New followers gained'},
+  {key:'link_clicks',label:'Link clicks',desc:'Clicks on bio / profile link'},
 ];
-const PLATS = ['fb','ig'];
-let piState = {}, piPrev = {}, piPrevLabel = null, piCurrLabel = null, piView = 'current';
-METRICS.forEach(function(m){ PLATS.forEach(function(p){ piState[p+'_'+m.key]=null; piPrev[p+'_'+m.key]=null; }); });
+const PLATS=['fb','ig'];
+let piState={},piPrev={},piPrevLabel=null,piCurrLabel=null,piView='current';
+METRICS.forEach(function(m){PLATS.forEach(function(p){piState[p+'_'+m.key]=null;piPrev[p+'_'+m.key]=null;});});
  
-function loadPIStorage() {
-  try {
+function loadPIStorage(){
+  try{
     const r=localStorage.getItem(PI_SK+'curr'),l=localStorage.getItem(PI_SK+'curr_label');
     if(r&&l){piState=JSON.parse(r);piCurrLabel=l;}
     const pr=localStorage.getItem(PI_SK+'prev'),pl=localStorage.getItem(PI_SK+'prev_label');
     if(pr&&pl){piPrev=JSON.parse(pr);piPrevLabel=pl;}
-  } catch(e){}
+  }catch(e){}
 }
  
-function savePIState() {
-  try { localStorage.setItem(PI_SK+'curr',JSON.stringify(piState)); if(piCurrLabel) localStorage.setItem(PI_SK+'curr_label',piCurrLabel); } catch(e){}
-}
+function savePIState(){try{localStorage.setItem(PI_SK+'curr',JSON.stringify(piState));if(piCurrLabel)localStorage.setItem(PI_SK+'curr_label',piCurrLabel);}catch(e){}}
+function savePIPrev(){try{localStorage.setItem(PI_SK+'prev',JSON.stringify(piPrev));if(piPrevLabel)localStorage.setItem(PI_SK+'prev_label',piPrevLabel);}catch(e){}}
  
-function savePIPrev() {
-  try { localStorage.setItem(PI_SK+'prev',JSON.stringify(piPrev)); if(piPrevLabel) localStorage.setItem(PI_SK+'prev_label',piPrevLabel); } catch(e){}
-}
- 
-function extractTotal(parsed, cols) {
-  if (!parsed) return null;
-  const h = parsed.headers.find(function(h){ return cols.some(function(c){ return h.trim().toLowerCase().includes(c); }); });
-  if (!h) return null;
-  let t=0; parsed.rows.forEach(function(row){ t+=toNum(row[h.trim().toLowerCase()]); }); return t;
-}
- 
-function buildPISlots() {
-  ['fb','ig'].forEach(function(p) {
-    const el = document.getElementById(p+'-slots');
-    el.innerHTML = '';
-    METRICS.forEach(function(m) {
-      const key = p+'_'+m.key;
-      const filled = piState[key]!==null;
-      const slot = document.createElement('div');
-      slot.className = 'upload-slot'+(filled?' filled':'');
-      slot.innerHTML = '<div class="slot-icon '+p+'">'+(p==='fb'?'f':'ig')+'</div>'
-        +'<div class="slot-text"><div class="slot-label">'+m.label+'</div>'
+function buildPISlots(){
+  ['fb','ig'].forEach(function(p){
+    const el=document.getElementById(p+'-slots');
+    if(!el) return;
+    el.innerHTML='';
+    METRICS.forEach(function(m){
+      const key=p+'_'+m.key;
+      const filled=piState[key]!==null;
+      const slot=document.createElement('div');
+      slot.className='upload-slot'+(filled?' filled':'');
+      slot.innerHTML='<div class="slot-icon '+p+'">'+(p==='fb'?'f':'ig')+'</div>'
+        +'<div style="flex:1"><div class="slot-label">'+m.label+'</div>'
         +'<div class="slot-sub'+(filled?' ok':'')+'">'+( filled?'Loaded \u2713':(p==='fb'?'Facebook':'Instagram')+' CSV')+'</div></div>'
         +'<input type="file" accept=".csv">';
-      slot.addEventListener('click', function(e){ if(e.target.tagName!=='INPUT') slot.querySelector('input').click(); });
-      slot.querySelector('input').addEventListener('change', function(e){ if(e.target.files[0]) handlePIFile(e.target.files[0], key, m, p); });
+      slot.addEventListener('click',function(e){if(e.target.tagName!=='INPUT')slot.querySelector('input').click();});
+      slot.querySelector('input').addEventListener('change',function(e){if(e.target.files[0])handlePIFile(e.target.files[0],key,p);});
       el.appendChild(slot);
     });
   });
 }
  
-function handlePIFile(file, key, metric, plat) {
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const parsed = parseCSV(e.target.result);
-    if (!parsed) { alert('Could not parse CSV.'); return; }
-    const cols = plat==='fb' ? metric.fbCols : metric.igCols;
-    const total = extractTotal(parsed, cols);
-    if (total===null) { alert('Could not find matching column.\nExpected one of: '+cols.join(', ')); return; }
-    piState[key] = total;
-    if (!piCurrLabel) piCurrLabel = file.name.replace('.csv','').replace(/_/g,' ');
+function handlePIFile(file,key,plat){
+  readFileBuffer(file,function(buffer){
+    const text=decodeCSV(buffer);
+    const total=parsePageInsightsCSV(text);
+    if(total===null){alert('Could not parse this CSV. Make sure it is a Meta Page Insights export.');return;}
+    piState[key]=total;
+    if(!piCurrLabel) piCurrLabel=file.name.replace('.csv','').replace(/_/g,' ');
     savePIState();
-    buildPISlots(); updatePIBadges(); renderPI();
-  };
-  reader.readAsText(file);
+    buildPISlots();updatePIBadges();renderPI();updateDownloadBtn();
+  });
 }
  
-function updatePIBadges() {
-  let h = '';
-  if (piPrevLabel) h += '<span class="badge">Prev: '+piPrevLabel+'</span>';
-  if (piCurrLabel) h += '<span class="badge current">Current: '+piCurrLabel+'</span>';
-  document.getElementById('pi-badges').innerHTML = h || '<span class="badge">No data</span>';
+function updatePIBadges(){
+  let h='';
+  if(piPrevLabel) h+='<span class="badge">Prev: '+piPrevLabel+'</span>';
+  if(piCurrLabel) h+='<span class="badge current">Current: '+piCurrLabel+'</span>';
+  document.getElementById('pi-badges').innerHTML=h||'<span class="badge">No data</span>';
 }
  
-function switchPiView(v, e) {
-  piView = v;
+function switchPiView(v,el){
+  piView=v;
   document.querySelectorAll('#page-page .itab').forEach(function(t){t.classList.remove('active');});
-  if(e) e.target.classList.add('active');
+  if(el) el.classList.add('active');
   renderPI();
 }
  
-function hasPIData() { return METRICS.some(function(m){ return PLATS.some(function(p){ return piState[p+'_'+m.key]!==null; }); }); }
-function hasPIPrev() { return METRICS.some(function(m){ return PLATS.some(function(p){ return piPrev[p+'_'+m.key]!==null; }); }); }
+function hasPIData(){return METRICS.some(function(m){return PLATS.some(function(p){return piState[p+'_'+m.key]!==null;});});}
+function hasPIPrev(){return METRICS.some(function(m){return PLATS.some(function(p){return piPrev[p+'_'+m.key]!==null;});});}
+function hasAnyData(){return adsData!==null||hasPIData();}
  
-function renderPI() {
-  const el = document.getElementById('pi-content');
-  if (!hasPIData()) { el.innerHTML = '<div class="empty-state">Upload at least one CSV to see data.</div>'; return; }
-  const showCmp = piView==='compare' && hasPIPrev();
-  let h = '<div class="table-wrap"><table><thead><tr><th>Metric</th>';
-  h += '<th class="r"><span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:50%;background:#1877F2;display:inline-block;"></span>Facebook</span></th>';
-  if (showCmp) h += '<th class="r">WoW</th>';
-  h += '<th class="r"><span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:50%;background:#E1306C;display:inline-block;"></span>Instagram</span></th>';
-  if (showCmp) h += '<th class="r">WoW</th>';
-  h += '</tr></thead><tbody>';
-  METRICS.forEach(function(m) {
-    const fb=piState['fb_'+m.key], ig=piState['ig_'+m.key];
-    const pfb=piPrev['fb_'+m.key], pig=piPrev['ig_'+m.key];
+function renderPI(){
+  const el=document.getElementById('pi-content');
+  if(!hasPIData()){el.innerHTML='<div class="empty-state">Upload at least one CSV to see data.</div>';return;}
+  const showCmp=piView==='compare'&&hasPIPrev();
+  let h='<div class="table-wrap"><table><thead><tr><th>Metric</th>';
+  h+='<th class="r"><span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:50%;background:#1877F2;display:inline-block;"></span>Facebook</span></th>';
+  if(showCmp) h+='<th class="r">WoW</th>';
+  h+='<th class="r"><span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:50%;background:#E1306C;display:inline-block;"></span>Instagram</span></th>';
+  if(showCmp) h+='<th class="r">WoW</th>';
+  h+='</tr></thead><tbody>';
+  METRICS.forEach(function(m){
+    const fb=piState['fb_'+m.key],ig=piState['ig_'+m.key];
+    const pfb=piPrev['fb_'+m.key],pig=piPrev['ig_'+m.key];
     const dFb=(showCmp&&fb!==null&&pfb!==null)?delta(fb,pfb):null;
     const dIg=(showCmp&&ig!==null&&pig!==null)?delta(ig,pig):null;
-    h += '<tr><td><div class="metric-name">'+m.label+'</div><div class="metric-desc">'+m.desc+'</div></td>';
-    h += '<td class="r">'+(fb!==null?fmtBig(fb):'<span class="no-data">—</span>')+'</td>';
-    if (showCmp) h += '<td class="r">'+pillHtml(dFb,false)+'</td>';
-    h += '<td class="r">'+(ig!==null?fmtBig(ig):'<span class="no-data">—</span>')+'</td>';
-    if (showCmp) h += '<td class="r">'+pillHtml(dIg,false)+'</td>';
-    h += '</tr>';
+    h+='<tr><td><div class="metric-name">'+m.label+'</div><div class="metric-desc">'+m.desc+'</div></td>';
+    h+='<td class="r">'+(fb!==null?fmtBig(fb):'<span class="no-data">—</span>')+'</td>';
+    if(showCmp) h+='<td class="r">'+pillHtml(dFb,false)+'</td>';
+    h+='<td class="r">'+(ig!==null?fmtBig(ig):'<span class="no-data">—</span>')+'</td>';
+    if(showCmp) h+='<td class="r">'+pillHtml(dIg,false)+'</td>';
+    h+='</tr>';
   });
-  h += '</tbody></table></div>';
-  if (!hasPIPrev()) h += '<div style="font-size:13px;color:var(--text2);margin-bottom:1rem;">Use "Start new period" below to enable comparison next period.</div>';
-  el.innerHTML = h;
+  h+='</tbody></table></div>';
+  if(!hasPIPrev()) h+='<div style="font-size:13px;color:var(--text2);margin-bottom:1rem;">Use "Start new period" to enable comparison next time.</div>';
+  el.innerHTML=h;
 }
  
-function startNewPeriod() {
-  if (!hasPIData()) { alert('No data to archive.'); return; }
-  if (!confirm('Move current data to "previous period" and start fresh?')) return;
-  piPrev = JSON.parse(JSON.stringify(piState));
-  piPrevLabel = piCurrLabel;
-  savePIPrev();
-  METRICS.forEach(function(m){ PLATS.forEach(function(p){ piState[p+'_'+m.key]=null; }); });
-  piCurrLabel = null;
-  savePIState();
-  buildPISlots(); updatePIBadges(); renderPI();
+function startNewPeriod(){
+  if(!hasPIData()){alert('No data to archive.');return;}
+  if(!confirm('Move current data to "previous period" and start fresh?')) return;
+  piPrev=JSON.parse(JSON.stringify(piState));piPrevLabel=piCurrLabel;savePIPrev();
+  METRICS.forEach(function(m){PLATS.forEach(function(p){piState[p+'_'+m.key]=null;});});
+  piCurrLabel=null;savePIState();
+  buildPISlots();updatePIBadges();renderPI();
 }
  
-function resetPI() {
-  if (!confirm('Clear all Page Insights data?')) return;
-  try { ['curr','curr_label','prev','prev_label'].forEach(function(k){localStorage.removeItem(PI_SK+k);}); } catch(e){}
-  METRICS.forEach(function(m){ PLATS.forEach(function(p){ piState[p+'_'+m.key]=null; piPrev[p+'_'+m.key]=null; }); });
-  piCurrLabel=null; piPrevLabel=null;
-  buildPISlots(); updatePIBadges(); renderPI();
+function resetPI(){
+  if(!confirm('Clear all Page Insights data?')) return;
+  try{['curr','curr_label','prev','prev_label'].forEach(function(k){localStorage.removeItem(PI_SK+k);});}catch(e){}
+  METRICS.forEach(function(m){PLATS.forEach(function(p){piState[p+'_'+m.key]=null;piPrev[p+'_'+m.key]=null;});});
+  piCurrLabel=null;piPrevLabel=null;
+  buildPISlots();updatePIBadges();renderPI();updateDownloadBtn();
 }
  
-/* ══════════════════════════════════════════════
-   OVERVIEW
-══════════════════════════════════════════════ */
-function renderOverview() {
-  const el = document.getElementById('overview-content');
-  const hasAds = adsData !== null;
-  const hasPI = hasPIData();
-  if (!hasAds && !hasPI) { el.innerHTML = '<div class="empty-state">Upload data in Ad Insights and Page Insights tabs to see the combined overview.</div>'; return; }
+function resetAll(){
+  if(!confirm('Clear all data?')) return;
+  resetAds();
+  try{['curr','curr_label','prev','prev_label'].forEach(function(k){localStorage.removeItem(PI_SK+k);});}catch(e){}
+  METRICS.forEach(function(m){PLATS.forEach(function(p){piState[p+'_'+m.key]=null;piPrev[p+'_'+m.key]=null;});});
+  piCurrLabel=null;piPrevLabel=null;
+  buildPISlots();updatePIBadges();renderPI();updateDownloadBtn();
+}
  
-  let h = '';
- 
-  if (hasAds) {
-    const curr = extractAds(adsData.rows, adsData.headers);
-    const prev = adsPrevData ? extractAds(adsPrevData.rows, adsPrevData.headers) : null;
-    const dSp=prev?delta(curr.totalSpend,prev.totalSpend):null;
-    const dR=prev?delta(curr.totalResults,prev.totalResults):null;
-    const dCPR=prev?delta(curr.avgCPR,prev.avgCPR):null;
-    const dRch=prev?delta(curr.totalReach,prev.totalReach):null;
- 
-    h += '<div class="overview-section">';
-    h += '<div class="overview-title"><span class="dot dot-ads"></span> Ad performance';
-    if (adsData.label) h += ' <span style="font-size:12px;font-weight:400;color:var(--text3);">'+adsData.label+'</span>';
-    h += '</div>';
-    h += '<div class="kpi-grid">';
-    h += kpi('Conversations', fmt(curr.totalResults), deltaSpan(dR,false));
-    h += kpi('Cost per result', fmtC(curr.avgCPR), deltaSpan(dCPR,true));
-    h += kpi('Amount spent', fmtC(curr.totalSpend), deltaSpan(dSp,true));
-    h += kpi('Reach (ads)', fmt(curr.totalReach), deltaSpan(dRch,false));
-    h += '</div></div>';
+/* ══ OVERVIEW ══ */
+function renderOverview(){
+  const el=document.getElementById('overview-content');
+  const hasAds=adsData!==null,hasPI=hasPIData();
+  if(!hasAds&&!hasPI){el.innerHTML='<div class="empty-state">Upload data in Ad Insights and Page Insights to see the combined overview.</div>';return;}
+  let h='';
+  if(hasAds){
+    const curr=extractAds(adsData.rows,adsData.headers);
+    const prev=adsPrevData?extractAds(adsPrevData.rows,adsPrevData.headers):null;
+    h+='<div class="overview-section"><div class="overview-title"><span class="dot dot-ads"></span> Ad performance';
+    if(adsData.label) h+=' <span style="font-size:12px;font-weight:400;color:var(--text3);">'+adsData.label+'</span>';
+    h+='</div><div class="kpi-grid">';
+    h+=kpi('Conversations',fmt(curr.totalResults),deltaSpan(prev?delta(curr.totalResults,prev.totalResults):null,false));
+    h+=kpi('Cost per result',fmtC(curr.avgCPR),deltaSpan(prev?delta(curr.avgCPR,prev.avgCPR):null,true));
+    h+=kpi('Amount spent',fmtC(curr.totalSpend),deltaSpan(prev?delta(curr.totalSpend,prev.totalSpend):null,true));
+    h+=kpi('Reach (ads)',fmt(curr.totalReach),deltaSpan(prev?delta(curr.totalReach,prev.totalReach):null,false));
+    h+='</div></div>';
   }
- 
-  if (hasPI) {
-    const fbViews=piState['fb_views'], igViews=piState['ig_views'];
-    const fbReach=piState['fb_reach'], igReach=piState['ig_reach'];
-    const fbFollows=piState['fb_follows'], igFollows=piState['ig_follows'];
-    const fbClicks=piState['fb_link_clicks'], igClicks=piState['ig_link_clicks'];
-    const pfbV=piPrev['fb_views'], pigV=piPrev['ig_views'];
-    const pfbF=piPrev['fb_follows'], pigF=piPrev['ig_follows'];
- 
-    h += '<div class="overview-section">';
-    h += '<div class="overview-title"><span class="dot dot-fb"></span> Facebook page';
-    if (piCurrLabel) h += ' <span style="font-size:12px;font-weight:400;color:var(--text3);">'+piCurrLabel+'</span>';
-    h += '</div>';
-    h += '<div class="kpi-grid">';
-    if (fbViews!==null) h += kpi('Views', fmtBig(fbViews), deltaSpan(pfbV!==null?delta(fbViews,pfbV):null,false));
-    if (fbReach!==null) h += kpi('Viewers', fmtBig(fbReach), deltaSpan(null,false));
-    if (fbFollows!==null) h += kpi('Follows', fmtBig(fbFollows), deltaSpan(pfbF!==null?delta(fbFollows,pfbF):null,false));
-    if (fbClicks!==null) h += kpi('Link clicks', fmtBig(fbClicks), deltaSpan(null,false));
-    h += '</div></div>';
- 
-    h += '<div class="overview-section">';
-    h += '<div class="overview-title"><span class="dot dot-ig"></span> Instagram page</div>';
-    h += '<div class="kpi-grid">';
-    if (igViews!==null) h += kpi('Views', fmtBig(igViews), deltaSpan(pigV!==null?delta(igViews,pigV):null,false));
-    if (igReach!==null) h += kpi('Reach', fmtBig(igReach), deltaSpan(null,false));
-    if (igFollows!==null) h += kpi('Follows', fmtBig(igFollows), deltaSpan(pigF!==null?delta(igFollows,pigF):null,false));
-    if (igClicks!==null) h += kpi('Link clicks', fmtBig(igClicks), deltaSpan(null,false));
-    h += '</div></div>';
+  if(hasPI){
+    ['fb','ig'].forEach(function(p){
+      const label=p==='fb'?'Facebook page':'Instagram page';
+      const color=p==='fb'?'#1877F2':'#E1306C';
+      const cls=p==='fb'?'dot-fb':'dot-ig';
+      h+='<div class="overview-section"><div class="overview-title"><span class="dot '+cls+'"></span> '+label;
+      if(piCurrLabel) h+=' <span style="font-size:12px;font-weight:400;color:var(--text3);">'+piCurrLabel+'</span>';
+      h+='</div><div class="kpi-grid">';
+      METRICS.forEach(function(m){
+        const val=piState[p+'_'+m.key];
+        const prev=piPrev[p+'_'+m.key];
+        if(val!==null) h+=kpi(m.label,fmtBig(val),deltaSpan(prev!==null?delta(val,prev):null,false));
+      });
+      h+='</div></div>';
+    });
   }
- 
-  el.innerHTML = h;
+  el.innerHTML=h;
 }
  
-/* ── Chart helper ── */
-function renderBar(id, labels, data, colors, isCurrency) {
-  const canvas = document.getElementById(id);
-  if (!canvas) return;
-  new Chart(canvas, {
-    type: 'bar',
-    data: { labels, datasets: [{ data, backgroundColor: colors, borderRadius: 4, borderSkipped: false }] },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(ctx){ return isCurrency?'$'+ctx.raw.toFixed(2):ctx.raw.toLocaleString(); } } } },
-      scales: {
-        x: { grid: { display: false }, ticks: { font: { size: 12 } } },
-        y: { grid: { color: 'rgba(128,128,128,0.08)' }, ticks: { font: { size: 11 }, callback: function(v){ return isCurrency?'$'+v.toFixed(0):v.toLocaleString(); } } }
-      }
-    }
+/* ══ DOWNLOAD REPORT ══ */
+function updateDownloadBtn(){
+  const btn=document.getElementById('download-btn');
+  if(!btn) return;
+  if(hasAnyData()){ btn.classList.add('ready'); btn.textContent='⬇ Download Report'; }
+  else { btn.classList.remove('ready'); btn.textContent='⬇ Download Report'; }
+}
+ 
+function downloadReport(){
+  if(!hasAnyData()){ alert('Upload data first before downloading a report.'); return; }
+ 
+  // Build snapshot of all rendered content
+  const adsSnap = adsData ? buildAdsSnapshot() : '';
+  const piSnap = hasPIData() ? buildPISnapshot() : '';
+  const ovSnap = buildOverviewSnapshot();
+ 
+  const periodLabel = (adsData && adsData.label) || piCurrLabel || 'Report';
+  const dateStr = new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+ 
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CM Insights — ${periodLabel}</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--bg:#fff;--bg2:#f5f5f4;--bg3:#efefed;--text:#1a1a1a;--text2:#555;--text3:#999;--border:rgba(0,0,0,0.1);--success-bg:#eaf3de;--success-text:#3b6d11;--danger-bg:#fcebeb;--danger-text:#a32d2d;--info-bg:#e6f1fb;--info-text:#185fa5;--radius:8px;--radius-lg:12px;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg3);color:var(--text);}
+.top-bar{background:var(--bg);border-bottom:0.5px solid rgba(0,0,0,0.18);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-size:15px;font-weight:500;}
+.meta{font-size:12px;color:var(--text3);}
+.container{max-width:960px;margin:0 auto;padding:2rem 1.5rem;}
+.section{margin-bottom:2.5rem;}
+.section-title{font-size:18px;font-weight:500;margin-bottom:1.25rem;padding-bottom:8px;border-bottom:0.5px solid rgba(0,0,0,0.1);}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:1.5rem;}
+.kpi-card{background:var(--bg2);border-radius:var(--radius);padding:1rem;}
+.kpi-label{font-size:12px;color:var(--text2);margin-bottom:4px;}
+.kpi-value{font-size:21px;font-weight:500;}
+.kpi-delta{font-size:12px;margin-top:4px;}
+.d-up{color:#3b6d11;} .d-down{color:#a32d2d;} .d-neutral{color:#999;}
+.table-wrap{overflow-x:auto;border:0.5px solid rgba(0,0,0,0.1);border-radius:var(--radius-lg);background:var(--bg);margin-bottom:1.5rem;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{text-align:left;padding:9px 14px;font-weight:500;color:var(--text2);border-bottom:0.5px solid rgba(0,0,0,0.1);background:var(--bg2);white-space:nowrap;}
+th.r{text-align:right;} td{padding:10px 14px;border-bottom:0.5px solid rgba(0,0,0,0.1);color:var(--text);white-space:nowrap;}
+td.r{text-align:right;} tr:last-child td{border-bottom:none;}
+.pill{display:inline-block;font-size:11px;padding:2px 8px;border-radius:99px;font-weight:500;}
+.pill-up{background:#eaf3de;color:#3b6d11;} .pill-down{background:#fcebeb;color:#a32d2d;} .pill-neutral{background:#f5f5f4;color:#999;} .pill-new{background:#e6f1fb;color:#185fa5;font-size:10px;}
+.ins-card{border-radius:var(--radius);padding:11px 15px;font-size:13px;border:0.5px solid;margin-bottom:8px;}
+.ins-good{background:#eaf3de;color:#3b6d11;border-color:#97c459;} .ins-bad{background:#fcebeb;color:#a32d2d;border-color:#f09595;} .ins-info{background:#e6f1fb;color:#185fa5;border-color:#85b7eb;}
+.metric-name{font-weight:500;} .metric-desc{font-size:11px;color:var(--text3);margin-top:1px;}
+.overview-title{font-size:14px;font-weight:500;color:var(--text2);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+.no-data{font-size:13px;color:#999;}
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <div class="brand">CM Insights</div>
+  <div class="meta">Period: ${periodLabel} &nbsp;·&nbsp; Generated: ${dateStr}</div>
+</div>
+<div class="container">
+${ovSnap}
+${adsSnap}
+${piSnap}
+</div>
+</body>
+</html>`;
+ 
+  const blob = new Blob([html], {type:'text/html;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'CM-Insights-'+periodLabel.replace(/\s/g,'-')+'.html';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+ 
+function buildOverviewSnapshot(){
+  const hasAds=adsData!==null, hasPI=hasPIData();
+  if(!hasAds&&!hasPI) return '';
+  let h='<div class="section"><div class="section-title">Overview</div>';
+  if(hasAds){
+    const curr=extractAds(adsData.rows,adsData.headers);
+    const prev=adsPrevData?extractAds(adsPrevData.rows,adsPrevData.headers):null;
+    h+='<div style="font-size:13px;font-weight:500;color:var(--text2);margin-bottom:10px;display:flex;align-items:center;gap:8px;"><span class="dot" style="background:#378ADD;"></span> Ad performance</div>';
+    h+='<div class="kpi-grid">';
+    h+=kpi('Conversations',fmt(curr.totalResults),deltaSpan(prev?delta(curr.totalResults,prev.totalResults):null,false));
+    h+=kpi('Cost per result',fmtC(curr.avgCPR),deltaSpan(prev?delta(curr.avgCPR,prev.avgCPR):null,true));
+    h+=kpi('Amount spent',fmtC(curr.totalSpend),deltaSpan(prev?delta(curr.totalSpend,prev.totalSpend):null,true));
+    h+=kpi('Reach',fmt(curr.totalReach),deltaSpan(prev?delta(curr.totalReach,prev.totalReach):null,false));
+    h+='</div>';
+  }
+  if(hasPI){
+    ['fb','ig'].forEach(function(p){
+      const color=p==='fb'?'#1877F2':'#E1306C';
+      const label=p==='fb'?'Facebook page':'Instagram page';
+      h+='<div style="font-size:13px;font-weight:500;color:var(--text2);margin-bottom:10px;margin-top:1rem;display:flex;align-items:center;gap:8px;"><span class="dot" style="background:'+color+';"></span> '+label+'</div>';
+      h+='<div class="kpi-grid">';
+      METRICS.forEach(function(m){
+        const val=piState[p+'_'+m.key];
+        const pv=piPrev[p+'_'+m.key];
+        if(val!==null) h+=kpi(m.label,fmtBig(val),deltaSpan(pv!==null?delta(val,pv):null,false));
+      });
+      h+='</div>';
+    });
+  }
+  return h+'</div>';
+}
+ 
+function buildAdsSnapshot(){
+  if(!adsData) return '';
+  const curr=extractAds(adsData.rows,adsData.headers);
+  const prev=adsPrevData?extractAds(adsPrevData.rows,adsPrevData.headers):null;
+  const ins=adsInsights(curr,prev,prev?delta(curr.totalSpend,prev.totalSpend):null,prev?delta(curr.totalResults,prev.totalResults):null,prev?delta(curr.avgCPR,prev.avgCPR):null,prev?delta(curr.avgCTR,prev.avgCTR):null,prev?delta(curr.avgFreq,prev.avgFreq):null);
+  let h='<div class="section"><div class="section-title">Ad Insights</div>';
+  if(ins.length) ins.forEach(function(i){h+='<div class="ins-card ins-'+i.t+'">'+i.m+'</div>';});
+  h+='<div class="kpi-grid">';
+  h+=kpi('Conversations',fmt(curr.totalResults),deltaSpan(prev?delta(curr.totalResults,prev.totalResults):null,false));
+  h+=kpi('Cost per result',fmtC(curr.avgCPR),deltaSpan(prev?delta(curr.avgCPR,prev.avgCPR):null,true));
+  h+=kpi('Amount spent',fmtC(curr.totalSpend),deltaSpan(prev?delta(curr.totalSpend,prev.totalSpend):null,true));
+  h+=kpi('Reach',fmt(curr.totalReach),deltaSpan(prev?delta(curr.totalReach,prev.totalReach):null,false));
+  h+='</div>';
+  h+=renderAdsTable(curr,prev);
+  h+=renderAgeTable(curr,prev);
+  return h+'</div>';
+}
+ 
+function buildPISnapshot(){
+  if(!hasPIData()) return '';
+  const showCmp=hasPIPrev();
+  let h='<div class="section"><div class="section-title">Page Insights</div>';
+  h+='<div class="table-wrap"><table><thead><tr><th>Metric</th>';
+  h+='<th class="r"><span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:50%;background:#1877F2;display:inline-block;"></span>Facebook</span></th>';
+  if(showCmp) h+='<th class="r">vs prev</th>';
+  h+='<th class="r"><span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:50%;background:#E1306C;display:inline-block;"></span>Instagram</span></th>';
+  if(showCmp) h+='<th class="r">vs prev</th>';
+  h+='</tr></thead><tbody>';
+  METRICS.forEach(function(m){
+    const fb=piState['fb_'+m.key],ig=piState['ig_'+m.key];
+    const pfb=piPrev['fb_'+m.key],pig=piPrev['ig_'+m.key];
+    h+='<tr><td><div class="metric-name">'+m.label+'</div><div class="metric-desc">'+m.desc+'</div></td>';
+    h+='<td class="r">'+(fb!==null?fmtBig(fb):'<span class="no-data">—</span>')+'</td>';
+    if(showCmp) h+='<td class="r">'+pillHtml(fb!==null&&pfb!==null?delta(fb,pfb):null,false)+'</td>';
+    h+='<td class="r">'+(ig!==null?fmtBig(ig):'<span class="no-data">—</span>')+'</td>';
+    if(showCmp) h+='<td class="r">'+pillHtml(ig!==null&&pig!==null?delta(ig,pig):null,false)+'</td>';
+    h+='</tr>';
   });
+  return h+'</tbody></table></div></div>';
 }
  
-/* ── Ads upload wiring ── */
-const adsDropZone = document.getElementById('ads-drop');
-const adsCsvInput = document.getElementById('ads-csv');
-adsCsvInput.addEventListener('change', function(e){ if(e.target.files[0]) handleAdsFile(e.target.files[0]); });
-adsDropZone.addEventListener('dragover', function(e){ e.preventDefault(); adsDropZone.style.background='var(--bg2)'; });
-adsDropZone.addEventListener('dragleave', function(){ adsDropZone.style.background='var(--bg)'; });
-adsDropZone.addEventListener('drop', function(e){ e.preventDefault(); adsDropZone.style.background='var(--bg)'; const f=e.dataTransfer.files[0]; if(f&&f.name.endsWith('.csv')) handleAdsFile(f); });
+/* ── Chart ── */
+function renderBar(id,labels,data,colors,isCurrency){
+  const canvas=document.getElementById(id);if(!canvas)return;
+  new Chart(canvas,{type:'bar',data:{labels,datasets:[{data,backgroundColor:colors,borderRadius:4,borderSkipped:false}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return isCurrency?'$'+ctx.raw.toFixed(2):ctx.raw.toLocaleString();}}}},
+    scales:{x:{grid:{display:false},ticks:{font:{size:12}}},y:{grid:{color:'rgba(128,128,128,0.08)'},ticks:{font:{size:11},callback:function(v){return isCurrency?'$'+v.toFixed(0):v.toLocaleString();}}}}}});
+}
+ 
+/* ── Ads drop zone ── */
+const adsDropZone=document.getElementById('ads-drop'),adsCsvInput=document.getElementById('ads-csv');
+adsCsvInput.addEventListener('change',function(e){if(e.target.files[0])handleAdsFile(e.target.files[0]);});
+adsDropZone.addEventListener('dragover',function(e){e.preventDefault();adsDropZone.style.background='var(--bg2)';});
+adsDropZone.addEventListener('dragleave',function(){adsDropZone.style.background='var(--bg)';});
+adsDropZone.addEventListener('drop',function(e){e.preventDefault();adsDropZone.style.background='var(--bg)';const f=e.dataTransfer.files[0];if(f&&f.name.endsWith('.csv'))handleAdsFile(f);});
  
 /* ── Init ── */
-loadAdsStorage();
-loadPIStorage();
-updateAdsBadges();
-updateAdsUploadZone();
-renderAds();
-buildPISlots();
-updatePIBadges();
-renderPI();
+loadAdsStorage();loadPIStorage();
+updateAdsBadges();updateAdsUploadZone();renderAds();
+buildPISlots();updatePIBadges();renderPI();
+updateDownloadBtn();
 </script>
 </body>
 </html>
