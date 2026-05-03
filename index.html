@@ -198,7 +198,7 @@ function parseCSV(text) {
     const vals = splitLine(lines[i]);
     if (vals.length < 2) continue;
     const row = {};
-    headers.forEach(function(h,idx){ row[h] = (vals[idx]||'').trim().replace(/^"|"$/g,''); });
+    headers.forEach(function(h,idx){ row[h.toLowerCase()] = (vals[idx]||'').trim().replace(/^"|"$/g,''); });
     rows.push(row);
   }
   return { headers, rows };
