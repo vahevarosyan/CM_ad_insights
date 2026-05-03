@@ -285,11 +285,14 @@ function extractAds(parsed){
   const iCTR= h['ctr'] !== undefined ? h['ctr'] : h['link click-through rate (destination)'];
   const iFrq= h['frequency'];
  
+  const iRT = h['result type'];
   let tSp=0, tR=0, tRch=0;
   const adMap={}, ageMap={};
  
   parsed.rows.forEach(function(vals){
-    const res = toNum(vals[iR]);
+    const resultType = (vals[iRT]||'').toLowerCase();
+    const isConv = resultType.includes('messaging conversations');
+    const res = isConv ? toNum(vals[iR]) : 0;
     const sp  = toNum(vals[iSp]);
     const rch = toNum(vals[iRch]);
     const ad  = (vals[iAd]||'Unknown').trim();
