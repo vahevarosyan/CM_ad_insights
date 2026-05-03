@@ -117,9 +117,9 @@
   </style>
 </head>
 <body>
- 
+
 <div class="report-banner" id="report-banner">📊 Report — read-only view</div>
- 
+
 <nav class="top-nav">
   <div class="nav-brand">CM Insights</div>
   <div class="nav-tab active" onclick="switchPage('ads',this)">Ad Insights</div>
@@ -130,7 +130,7 @@
     <button class="reset-btn" onclick="resetAll()" style="margin:0;">Clear all</button>
   </div>
 </nav>
- 
+
 <!-- AD INSIGHTS -->
 <div class="page active" id="page-ads">
   <div class="period-row">
@@ -146,7 +146,7 @@
   <div id="ads-content"><div class="empty-state">Upload your first CSV to see data.</div></div>
   <div class="bottom-row"><div></div><button class="reset-btn" onclick="resetAds()">Clear Ads data</button></div>
 </div>
- 
+
 <!-- PAGE INSIGHTS -->
 <div class="page" id="page-page">
   <div class="period-row">
@@ -167,13 +167,13 @@
     <button class="reset-btn" onclick="resetPI()">Clear Page Insights data</button>
   </div>
 </div>
- 
+
 <!-- OVERVIEW -->
 <div class="page" id="page-overview">
   <div class="page-title">Overview</div>
   <div id="overview-content"><div class="empty-state">Upload data in Ad Insights and Page Insights to see the combined overview.</div></div>
 </div>
- 
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
 /* ── UTILS ── */
@@ -186,7 +186,7 @@ function decodeCSV(buffer) {
   } catch(e){}
   return new TextDecoder('utf-8').decode(buffer);
 }
- 
+
 function parseCSV(text) {
   const lines = text.split(/\r?\n/).filter(function(l){ return l.trim(); });
   if (lines.length < 2) return null;
@@ -203,7 +203,7 @@ function parseCSV(text) {
   }
   return { headers, rows };
 }
- 
+
 function parsePageInsightsCSV(text) {
   const lines = text.split(/\r?\n/).filter(function(l){ return l.trim(); });
   let dataStart = -1;
@@ -222,7 +222,7 @@ function parsePageInsightsCSV(text) {
   }
   return total;
 }
- 
+
 function splitLine(line) {
   const r=[]; let cur='', inQ=false;
   for (let i=0;i<line.length;i++) {
@@ -233,7 +233,7 @@ function splitLine(line) {
   }
   r.push(cur); return r;
 }
- 
+
 function findCol(headers, candidates) {
   for (const c of candidates) {
     const f = headers.find(function(h){ return h.includes(c.toLowerCase()); });
@@ -241,7 +241,7 @@ function findCol(headers, candidates) {
   }
   return null;
 }
- 
+
 function toNum(v){ if(!v) return 0; return parseFloat(String(v).replace(/[^0-9.\-]/g,''))||0; }
 function fmt(n,d){ d=d===undefined?0:d; if(n===null||isNaN(n)) return '—'; return n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d}); }
 function fmtC(n){ if(n===null||isNaN(n)) return '—'; return '$'+fmt(n,2); }
@@ -250,13 +250,13 @@ function delta(c,p){ if(!p||p===0) return null; return ((c-p)/Math.abs(p))*100; 
 function pillHtml(pct,inv){ if(pct===null) return ''; const good=inv?pct<0:pct>0; const cls=Math.abs(pct)<0.5?'pill-neutral':(good?'pill-up':'pill-down'); return '<span class="pill '+cls+'">'+(pct>0?'+':'')+pct.toFixed(1)+'%</span>'; }
 function deltaSpan(pct,inv){ if(pct===null) return '<span class="d-neutral">—</span>'; const good=inv?pct<0:pct>0; const cls=Math.abs(pct)<0.5?'d-neutral':(good?'d-up':'d-down'); return '<span class="'+cls+'">'+(pct>0?'+':'')+pct.toFixed(1)+'%</span>'; }
 const NEW_PILL='<span class="pill pill-new">New</span>';
- 
+
 function readFileBuffer(file, cb) {
   const reader = new FileReader();
   reader.onload = function(e){ cb(e.target.result); };
   reader.readAsArrayBuffer(file);
 }
- 
+
 /* ── PAGE SWITCHING ── */
 function switchPage(id, el) {
   document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
@@ -265,11 +265,11 @@ function switchPage(id, el) {
   if(el) el.classList.add('active');
   if(id==='overview') renderOverview();
 }
- 
+
 /* ══ AD INSIGHTS ══ */
 const ADS_SK='ads_curr_v2',ADS_SKL='ads_curr_label_v2',ADS_PSK='ads_prev_v2',ADS_PSKL='ads_prev_label_v2';
 let adsData=null,adsPrevData=null,adsPrevLabel=null,adsActiveTab='ads';
- 
+
 function loadAdsStorage(){
   try{
     const r=localStorage.getItem(ADS_SK),l=localStorage.getItem(ADS_SKL);
@@ -278,11 +278,11 @@ function loadAdsStorage(){
     if(pr&&pl){adsPrevData=JSON.parse(pr);adsPrevData.label=pl;adsPrevLabel=pl;}
   }catch(e){}
 }
- 
+
 function extractAds(rows,headers){
   const cR=findCol(headers,['results']);
   const cCPR=findCol(headers,['cost per result']);
-  const cSp=findCol(headers,['amount spent']);
+  const cSp=findCol(headers,['amount spent (usd)','amount spent']);
   const cAd=findCol(headers,['ad name']);
   const cAge=findCol(headers,['age']);
   const cRch=findCol(headers,['reach']);
@@ -300,7 +300,7 @@ function extractAds(rows,headers){
   const avgFreq=adRows.length>0?adRows.reduce(function(s,r){return s+r.freq;},0)/adRows.length:0;
   return {totalSpend,totalResults,avgCPR,totalReach,avgCTR,avgFreq,adRows};
 }
- 
+
 function handleAdsFile(file){
   readFileBuffer(file,function(buffer){
     const text=decodeCSV(buffer);
@@ -317,20 +317,20 @@ function handleAdsFile(file){
     updateAdsBadges();updateAdsUploadZone();renderAds();updateDownloadBtn();
   });
 }
- 
+
 function updateAdsBadges(){
   let h='';
   if(adsPrevLabel) h+='<span class="badge">Prev: '+adsPrevLabel+'</span>';
   if(adsData) h+='<span class="badge current">Current: '+adsData.label+'</span>';
   document.getElementById('ads-badges').innerHTML=h||'<span class="badge">No data</span>';
 }
- 
+
 function updateAdsUploadZone(){
   if(!adsData) return;
   document.getElementById('ads-upload-title').textContent="Upload next period's CSV";
   document.getElementById('ads-upload-sub').textContent='Current will become previous for comparison';
 }
- 
+
 function renderAds(){
   if(!adsData){document.getElementById('ads-content').innerHTML='<div class="empty-state">Upload your first CSV to see data.</div>';return;}
   const curr=extractAds(adsData.rows,adsData.headers);
@@ -366,9 +366,9 @@ function renderAds(){
     });
   }
 }
- 
+
 function kpi(label,value,dh){ return '<div class="kpi-card"><div class="kpi-label">'+label+'</div><div class="kpi-value">'+value+'</div><div class="kpi-delta">'+dh+'</div></div>'; }
- 
+
 function adsInsights(curr,prev,dSp,dR,dCPR,dCTR,dFrq){
   const ins=[];
   if(!prev){ins.push({t:'info',m:"First period uploaded. Upload next period to compare."});return ins;}
@@ -382,9 +382,9 @@ function adsInsights(curr,prev,dSp,dR,dCPR,dCTR,dFrq){
   if(dCTR!==null&&dCTR>20) ins.push({t:'good',m:'CTR up '+fmt(dCTR,1)+'% — creatives resonating better.'});
   return ins;
 }
- 
+
 function buildAdMap(data){ const map={}; data.adRows.forEach(function(r){const k=r.name.trim().toLowerCase();if(!map[k])map[k]={results:0,spend:0};map[k].results+=r.results;map[k].spend+=r.spend;}); Object.keys(map).forEach(function(k){map[k].cpr=map[k].results>0?map[k].spend/map[k].results:0;}); return map; }
- 
+
 function renderAdsTable(curr,prev){
   const pm=prev?buildAdMap(prev):{};
   const g={};
@@ -413,7 +413,7 @@ function renderAdsTable(curr,prev){
   });
   return h+'</tbody></table></div>';
 }
- 
+
 function renderAgeTable(curr,prev){
   const g={};curr.adRows.forEach(function(r){if(!r.age)return;const k=r.age.trim().toLowerCase();if(!g[k])g[k]={age:r.age,results:0,spend:0};g[k].results+=r.results;g[k].spend+=r.spend;});
   const pg={};if(prev)prev.adRows.forEach(function(r){if(!r.age)return;const k=r.age.trim().toLowerCase();if(!pg[k])pg[k]={results:0,spend:0};pg[k].results+=r.results;pg[k].spend+=r.spend;});
@@ -436,14 +436,14 @@ function renderAgeTable(curr,prev){
   });
   return h+'</tbody></table></div>';
 }
- 
+
 function switchAdsTab(tab,el){
   adsActiveTab=tab;
   document.querySelectorAll('#ads-content .itab').forEach(function(t){t.classList.remove('active');});
   if(el) el.classList.add('active');
   renderAds();
 }
- 
+
 function resetAds(){
   if(!confirm('Clear all Ads data?')) return;
   try{[ADS_SK,ADS_SKL,ADS_PSK,ADS_PSKL].forEach(function(k){localStorage.removeItem(k);});}catch(e){}
@@ -452,7 +452,7 @@ function resetAds(){
   document.getElementById('ads-upload-sub').textContent='Ads Manager exported CSV — drag & drop or click';
   updateAdsBadges();renderAds();updateDownloadBtn();
 }
- 
+
 /* ══ PAGE INSIGHTS ══ */
 const PI_SK='pi_v2_';
 const METRICS=[
@@ -464,7 +464,7 @@ const METRICS=[
 const PLATS=['fb','ig'];
 let piState={},piPrev={},piPrevLabel=null,piCurrLabel=null,piView='current';
 METRICS.forEach(function(m){PLATS.forEach(function(p){piState[p+'_'+m.key]=null;piPrev[p+'_'+m.key]=null;});});
- 
+
 function loadPIStorage(){
   try{
     const r=localStorage.getItem(PI_SK+'curr'),l=localStorage.getItem(PI_SK+'curr_label');
@@ -473,10 +473,10 @@ function loadPIStorage(){
     if(pr&&pl){piPrev=JSON.parse(pr);piPrevLabel=pl;}
   }catch(e){}
 }
- 
+
 function savePIState(){try{localStorage.setItem(PI_SK+'curr',JSON.stringify(piState));if(piCurrLabel)localStorage.setItem(PI_SK+'curr_label',piCurrLabel);}catch(e){}}
 function savePIPrev(){try{localStorage.setItem(PI_SK+'prev',JSON.stringify(piPrev));if(piPrevLabel)localStorage.setItem(PI_SK+'prev_label',piPrevLabel);}catch(e){}}
- 
+
 function buildPISlots(){
   ['fb','ig'].forEach(function(p){
     const el=document.getElementById(p+'-slots');
@@ -497,7 +497,7 @@ function buildPISlots(){
     });
   });
 }
- 
+
 function handlePIFile(file,key,plat){
   readFileBuffer(file,function(buffer){
     const text=decodeCSV(buffer);
@@ -509,25 +509,25 @@ function handlePIFile(file,key,plat){
     buildPISlots();updatePIBadges();renderPI();updateDownloadBtn();
   });
 }
- 
+
 function updatePIBadges(){
   let h='';
   if(piPrevLabel) h+='<span class="badge">Prev: '+piPrevLabel+'</span>';
   if(piCurrLabel) h+='<span class="badge current">Current: '+piCurrLabel+'</span>';
   document.getElementById('pi-badges').innerHTML=h||'<span class="badge">No data</span>';
 }
- 
+
 function switchPiView(v,el){
   piView=v;
   document.querySelectorAll('#page-page .itab').forEach(function(t){t.classList.remove('active');});
   if(el) el.classList.add('active');
   renderPI();
 }
- 
+
 function hasPIData(){return METRICS.some(function(m){return PLATS.some(function(p){return piState[p+'_'+m.key]!==null;});});}
 function hasPIPrev(){return METRICS.some(function(m){return PLATS.some(function(p){return piPrev[p+'_'+m.key]!==null;});});}
 function hasAnyData(){return adsData!==null||hasPIData();}
- 
+
 function renderPI(){
   const el=document.getElementById('pi-content');
   if(!hasPIData()){el.innerHTML='<div class="empty-state">Upload at least one CSV to see data.</div>';return;}
@@ -554,7 +554,7 @@ function renderPI(){
   if(!hasPIPrev()) h+='<div style="font-size:13px;color:var(--text2);margin-bottom:1rem;">Use "Start new period" to enable comparison next time.</div>';
   el.innerHTML=h;
 }
- 
+
 function startNewPeriod(){
   if(!hasPIData()){alert('No data to archive.');return;}
   if(!confirm('Move current data to "previous period" and start fresh?')) return;
@@ -563,7 +563,7 @@ function startNewPeriod(){
   piCurrLabel=null;savePIState();
   buildPISlots();updatePIBadges();renderPI();
 }
- 
+
 function resetPI(){
   if(!confirm('Clear all Page Insights data?')) return;
   try{['curr','curr_label','prev','prev_label'].forEach(function(k){localStorage.removeItem(PI_SK+k);});}catch(e){}
@@ -571,7 +571,7 @@ function resetPI(){
   piCurrLabel=null;piPrevLabel=null;
   buildPISlots();updatePIBadges();renderPI();updateDownloadBtn();
 }
- 
+
 function resetAll(){
   if(!confirm('Clear all data?')) return;
   resetAds();
@@ -580,7 +580,7 @@ function resetAll(){
   piCurrLabel=null;piPrevLabel=null;
   buildPISlots();updatePIBadges();renderPI();updateDownloadBtn();
 }
- 
+
 /* ══ OVERVIEW ══ */
 function renderOverview(){
   const el=document.getElementById('overview-content');
@@ -617,7 +617,7 @@ function renderOverview(){
   }
   el.innerHTML=h;
 }
- 
+
 /* ══ DOWNLOAD REPORT ══ */
 function updateDownloadBtn(){
   const btn=document.getElementById('download-btn');
@@ -625,18 +625,18 @@ function updateDownloadBtn(){
   if(hasAnyData()){ btn.classList.add('ready'); btn.textContent='⬇ Download Report'; }
   else { btn.classList.remove('ready'); btn.textContent='⬇ Download Report'; }
 }
- 
+
 function downloadReport(){
   if(!hasAnyData()){ alert('Upload data first before downloading a report.'); return; }
- 
+
   // Build snapshot of all rendered content
   const adsSnap = adsData ? buildAdsSnapshot() : '';
   const piSnap = hasPIData() ? buildPISnapshot() : '';
   const ovSnap = buildOverviewSnapshot();
- 
+
   const periodLabel = (adsData && adsData.label) || piCurrLabel || 'Report';
   const dateStr = new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
- 
+
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -686,7 +686,7 @@ ${piSnap}
 </div>
 </body>
 </html>`;
- 
+
   const blob = new Blob([html], {type:'text/html;charset=utf-8'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -695,7 +695,7 @@ ${piSnap}
   a.click();
   URL.revokeObjectURL(url);
 }
- 
+
 function buildOverviewSnapshot(){
   const hasAds=adsData!==null, hasPI=hasPIData();
   if(!hasAds&&!hasPI) return '';
@@ -727,7 +727,7 @@ function buildOverviewSnapshot(){
   }
   return h+'</div>';
 }
- 
+
 function buildAdsSnapshot(){
   if(!adsData) return '';
   const curr=extractAds(adsData.rows,adsData.headers);
@@ -745,7 +745,7 @@ function buildAdsSnapshot(){
   h+=renderAgeTable(curr,prev);
   return h+'</div>';
 }
- 
+
 function buildPISnapshot(){
   if(!hasPIData()) return '';
   const showCmp=hasPIPrev();
@@ -768,7 +768,7 @@ function buildPISnapshot(){
   });
   return h+'</tbody></table></div></div>';
 }
- 
+
 /* ── Chart ── */
 function renderBar(id,labels,data,colors,isCurrency){
   const canvas=document.getElementById(id);if(!canvas)return;
@@ -776,14 +776,14 @@ function renderBar(id,labels,data,colors,isCurrency){
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return isCurrency?'$'+ctx.raw.toFixed(2):ctx.raw.toLocaleString();}}}},
     scales:{x:{grid:{display:false},ticks:{font:{size:12}}},y:{grid:{color:'rgba(128,128,128,0.08)'},ticks:{font:{size:11},callback:function(v){return isCurrency?'$'+v.toFixed(0):v.toLocaleString();}}}}}});
 }
- 
+
 /* ── Ads drop zone ── */
 const adsDropZone=document.getElementById('ads-drop'),adsCsvInput=document.getElementById('ads-csv');
 adsCsvInput.addEventListener('change',function(e){if(e.target.files[0])handleAdsFile(e.target.files[0]);});
 adsDropZone.addEventListener('dragover',function(e){e.preventDefault();adsDropZone.style.background='var(--bg2)';});
 adsDropZone.addEventListener('dragleave',function(){adsDropZone.style.background='var(--bg)';});
 adsDropZone.addEventListener('drop',function(e){e.preventDefault();adsDropZone.style.background='var(--bg)';const f=e.dataTransfer.files[0];if(f&&f.name.endsWith('.csv'))handleAdsFile(f);});
- 
+
 /* ── Init ── */
 loadAdsStorage();loadPIStorage();
 updateAdsBadges();updateAdsUploadZone();renderAds();
